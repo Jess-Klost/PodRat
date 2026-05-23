@@ -26,7 +26,16 @@ public class AudioPlayer
 
     public bool LoadAudio(string path)
     {
-        MediaPlayer.Media = new Media(LibVLC, new Uri(path));
+        Uri uri;
+        try
+        {
+            uri = new Uri(path);
+        }
+        catch (UriFormatException)
+        {
+            return false;
+        }
+        MediaPlayer.Media = new Media(LibVLC, uri);
         if (MediaPlayer == null)
         {
             return false;            

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -75,5 +76,15 @@ public partial class MainWindow : Window
     private void Backward_OnClick(object? sender, RoutedEventArgs e)
     {
         viewModel?.FastForward(-10000);
+    }
+
+    private void Download_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (e.Source == null)
+            return;
+        Button? button = e.Source as Button;
+        if (button == null || button.Name == null)
+            return;
+        viewModel?.DownloadItem(button.Name);
     }
 }

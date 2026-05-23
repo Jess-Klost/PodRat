@@ -16,21 +16,20 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<SyndicationItem> Feed { get; set; }
 
-    AudioPlayer audioPlayer;  
-
+    AudioPlayer audioPlayer;
+    RSSFeedReader feedReader = new RSSFeedReader("");
 
     public MainWindowViewModel()
     {
         audioPlayer = new AudioPlayer();
         audioPlayer.audioPositionChanged += AudioPositionChanged;
         audioPlayer.SetVolume((int)Volume);
-        audioPlayer.LoadAudio("/home/aklost/github/RSSPod/Where_Do_We_Begin_Episode_57_Brant_Summer.mp3");
+        audioPlayer.LoadAudio("a");
         PopulateFeed();
     }
 
     async void PopulateFeed()
     {
-        RSSFeedReader feedReader = new RSSFeedReader("https://feed.podbean.com/wayneradiotv/feed.xml");
         await feedReader.ReadRSSFeed();
         Feed = feedReader.GetFeedItems();
     }
@@ -74,5 +73,10 @@ public partial class MainWindowViewModel : ViewModelBase
     float TimeToPercent(float time)
     {
         return time / audioPlayer.GetLengthTime();
+    }
+
+    public void DownloadItem(string id)
+    {
+        feedReader.GetItem(id, out SyndicationItem? item);
     }
 }
