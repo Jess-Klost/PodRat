@@ -45,8 +45,19 @@ public partial class MainWindowViewModel : ViewModelBase
         audioPlayer.SetPosition(position);
     }
 
+    public void FastForward(float time)
+    {
+        float percentChange = TimeToPercent(time);
+        audioPlayer.SetPosition(audioPlayer.GetPosition() + percentChange);
+    }
+
     public bool IsPlaying()
     {
         return audioPlayer.IsPlaying();
+    }
+
+    float TimeToPercent(float time)
+    {
+        return time / audioPlayer.GetLengthTime();
     }
 }

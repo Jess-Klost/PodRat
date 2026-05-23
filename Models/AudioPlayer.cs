@@ -68,4 +68,9 @@ public class AudioPlayer
     {
         audioPositionChanged?.Invoke(this, eventArgs.Position); 
     }
+
+    public float GetLengthTime()
+    {
+        return MediaPlayer.Length;
+    }
 }

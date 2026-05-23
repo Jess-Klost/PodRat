@@ -66,4 +66,14 @@ public partial class MainWindow : Window
         if (editingPosition)
             viewModel?.EditPosition((float)PositionSlider.Value);
     }
+
+    private void Forward_OnClick(object? sender, RoutedEventArgs e)
+    {
+        viewModel?.FastForward(10000);
+    }
+
+    private void Backward_OnClick(object? sender, RoutedEventArgs e)
+    {
+        viewModel?.FastForward(-10000);
+    }
 }
