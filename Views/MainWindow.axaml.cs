@@ -1,10 +1,7 @@
-using System.Diagnostics;
-using System.Threading.Channels;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using HarfBuzzSharp;
 using RSSPod.ViewModels;
 
 namespace RSSPod.Views;
