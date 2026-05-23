@@ -50,7 +50,8 @@ public partial class MainWindow : Window
     private void Position_Pressed(object? sender, PointerPressedEventArgs e)
     {
         editingPosition = true;
-        viewModel?.PauseAudio();
+        if (playing)
+            viewModel?.PauseAudio();
     }
 
     private void Position_Released(object? sender, PointerReleasedEventArgs e)
