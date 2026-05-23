@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:RSSPod.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:dialogs="using:Avalonia.Dialogs"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="RSSPod.Views.MainWindow"
@@ -19,6 +20,7 @@
 
     <StackPanel VerticalAlignment="Bottom">
         <!-- Media Control -->
+        <Slider Name="AudioPosition" Value="{Binding Position, Mode=TwoWay}" Maximum="1" Minimum="0"></Slider>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button>
                 <StackPanel Orientation="Horizontal" Spacing="6">
@@ -42,7 +44,7 @@
             <Button>
                 <Button.Flyout>
                     <Flyout ShowMode="TransientWithDismissOnPointerMoveAway" Placement="Top">
-                        <Slider Orientation="Vertical" Value="50" Height="100"></Slider>    
+                        <Slider Orientation="Vertical" Value="{Binding Volume}" Height="100" ValueChanged="Volume_OnValueChanged" Name="VolumeSlider"></Slider>    
                     </Flyout>
                 </Button.Flyout>
                 <StackPanel Orientation="Horizontal" Spacing="6">
