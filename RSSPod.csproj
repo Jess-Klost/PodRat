@@ -23,5 +23,6 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
     <PackageReference Include="LibVLCSharp.Avalonia" Version="3.9.7.1" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="10.0.8" />
   </ItemGroup>
 </Project>
