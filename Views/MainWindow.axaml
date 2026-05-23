@@ -19,6 +19,7 @@
     </Design.DataContext> 
 
     <StackPanel VerticalAlignment="Bottom">
+        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center"></TextBlock>
         <!-- Media Control -->
         <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged" Margin="10"></Slider>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

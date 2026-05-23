@@ -7,7 +7,9 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial double Position { get; set; } = 0;
     [ObservableProperty]
-    public partial double Volume { get; set; } = 50; 
+    public partial double Volume { get; set; } = 50;
+    [ObservableProperty]
+    public partial string Title { get; set; } = "Audio Title";
 
     AudioPlayer audioPlayer;  
 
