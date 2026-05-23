@@ -20,7 +20,7 @@
 
     <StackPanel VerticalAlignment="Bottom">
         <!-- Media Control -->
-        <Slider Name="AudioPosition" Value="{Binding Position, Mode=TwoWay}" Maximum="1" Minimum="0"></Slider>
+        <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button>
                 <StackPanel Orientation="Horizontal" Spacing="6">
@@ -44,7 +44,7 @@
             <Button>
                 <Button.Flyout>
                     <Flyout ShowMode="TransientWithDismissOnPointerMoveAway" Placement="Top">
-                        <Slider Orientation="Vertical" Value="{Binding Volume}" Height="100" ValueChanged="Volume_OnValueChanged" Name="VolumeSlider"></Slider>    
+                        <Slider Orientation="Vertical" Value="50" Height="100" ValueChanged="Volume_OnValueChanged" Name="VolumeSlider"></Slider>    
                     </Flyout>
                 </Button.Flyout>
                 <StackPanel Orientation="Horizontal" Spacing="6">

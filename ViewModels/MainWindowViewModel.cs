@@ -1,14 +1,13 @@
-﻿using Avalonia.Interactivity;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RSSPod.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting { get; } = "Welcome to Avalonia!";
     [ObservableProperty]
     public partial double Position { get; set; } = 0;
-    public double Volume { get; set; } = 50; 
+    [ObservableProperty]
+    public partial double Volume { get; set; } = 50; 
 
     AudioPlayer audioPlayer;  
 
@@ -18,7 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase
         audioPlayer = new AudioPlayer();
         audioPlayer.audioPositionChanged += AudioPositionChanged;
         audioPlayer.SetVolume((int)Volume);
-        audioPlayer.LoadAudio("/home/aklost/Documents/sound-effects/Sonniss.com-GDC2024-GameAudioBundle2of9/InMotionAudio - Submerge/WATRFlow_WaterFlow21_InMotionAudio_Submerge.wav");
+        audioPlayer.LoadAudio("/home/aklost/github/RSSPod/Where_Do_We_Begin_Episode_57_Brant_Summer.mp3");
     }
 
     void AudioPositionChanged(object? sender, float position)
@@ -26,18 +25,28 @@ public partial class MainWindowViewModel : ViewModelBase
         Position = position;
     }
 
-    public void OnPlayButtonClicked()
+    public void PlayAudio()
     {
         audioPlayer.Play();
     }
 
-    public void OnPauseButtonClicked()
+    public void PauseAudio()
     {
         audioPlayer.Pause();
     }
 
-    public void OnVolumeChanged(int volume)
+    public void ChangeVolume(int volume)
     {
         audioPlayer.SetVolume(volume);
+    }
+
+    public void EditPosition(float position)
+    {
+        audioPlayer.SetPosition(position);
+    }
+
+    public bool IsPlaying()
+    {
+        return audioPlayer.IsPlaying();
     }
 }

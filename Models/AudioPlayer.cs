@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using LibVLCSharp.Shared;
 
 public class AudioPlayer
@@ -12,12 +11,11 @@ public class AudioPlayer
     }
     public EventHandler<float> audioPositionChanged;
     private MediaPlayer _mediaPlayer;
-    public MediaPlayer MediaPlayer
+    private MediaPlayer MediaPlayer
     {
         get => _mediaPlayer;
         set => _mediaPlayer = value;
     }
-    private Media currentAudio;
 
     public AudioPlayer()
     {
@@ -46,6 +44,11 @@ public class AudioPlayer
         MediaPlayer.Pause();
     }
     
+    public bool IsPlaying()
+    {
+        return MediaPlayer.IsPlaying;
+    }
+
     public void SetVolume(int volume)
     {
         MediaPlayer.Volume = volume;
