@@ -32,7 +32,6 @@ public class DownloadManager
         }
         if (audioLink == null)
             throw new InvalidOperationException("DownloadManager: No audio link found in item");
-        string path = Path.Combine(downloadDirectory, audioLink.Segments.Last());
         using (HttpClient client = new HttpClient())
         {
             try
