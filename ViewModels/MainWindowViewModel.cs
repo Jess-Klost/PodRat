@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RSSPod.ViewModels;
@@ -14,10 +15,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial string Title { get; set; } = "Audio Title";
     [ObservableProperty]
-    public partial ObservableCollection<SyndicationItem> Feed { get; set; }
+    public partial ObservableCollection<SyndicationItem> Feed { get; set; } = new ObservableCollection<SyndicationItem>();
 
     AudioPlayer audioPlayer;
-    RSSFeedReader feedReader = new RSSFeedReader("");
+    RSSFeedReader feedReader = new RSSFeedReader("https://feed.podbean.com/wayneradiotv/feed.xml");
+    DownloadManager downloadManager = new DownloadManager();
 
     public MainWindowViewModel()
     {
@@ -75,8 +77,11 @@ public partial class MainWindowViewModel : ViewModelBase
         return time / audioPlayer.GetLengthTime();
     }
 
-    public void DownloadItem(string id)
+    public async Task DownloadItem(string id)
     {
-        feedReader.GetItem(id, out SyndicationItem? item);
+        if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
+        {
+            await downloadManager.DownloadItem(item);
+        }
     }
 }

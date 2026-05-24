@@ -20,18 +20,22 @@ public class RSSFeedReader
 
     public async Task<bool> ReadRSSFeed()
     {
-        using HttpClient client = new HttpClient();
-        Stream stream;
-        try 
+        using (HttpClient client = new HttpClient())
         {
-            stream = await client.GetStreamAsync(uri);
+            Stream stream;
+            try 
+            {
+                stream = await client.GetStreamAsync(uri);
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+            using (XmlReader reader = XmlReader.Create(stream))
+            {
+                feed = SyndicationFeed.Load(reader);   
+            }
         }
-        catch (InvalidOperationException)
-        {
-            return false;
-        }
-        using XmlReader reader = XmlReader.Create(stream);
-        feed = SyndicationFeed.Load(reader);
         itemsDict = new Dictionary<string, SyndicationItem>();
         foreach(SyndicationItem item in feed.Items)
         {
