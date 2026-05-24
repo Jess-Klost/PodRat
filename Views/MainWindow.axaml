@@ -19,8 +19,19 @@
     </Design.DataContext> 
 
     <StackPanel VerticalAlignment="Bottom">
+        <StackPanel Orientation="Horizontal">
+            <ComboBox ItemsSource="{Binding PodcastFeeds}" 
+                PlaceholderText="Podcast Feed"
+                SelectionChanged="FeedSelector_OnChange">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
         <ScrollViewer MaxHeight="300">
-            <ItemsControl ItemsSource="{Binding Feed}">
+            <ItemsControl ItemsSource="{Binding CurrentFeed}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border CornerRadius="16" Padding="12,6" Margin="4">

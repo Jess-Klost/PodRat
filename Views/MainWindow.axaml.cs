@@ -87,4 +87,17 @@ public partial class MainWindow : Window
             return;
         viewModel?.DownloadItem(button.Name);
     }
+
+    private void FeedSelector_OnChange(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.Source == null)
+            return;
+        ComboBox? selector = e.Source as ComboBox;
+        if (selector == null || selector.SelectedItem == null)
+            return;
+        PodcastFeed? feed = selector.SelectedItem as PodcastFeed;
+        if (feed == null)
+            return;
+        viewModel?.OnFeedChanged(feed);
+    }
 }
