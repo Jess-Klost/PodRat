@@ -103,6 +103,7 @@ public partial class MainWindow : Window
         if (viewModel != null && viewModel.ItemDownloaded(button.Name))
         {
             viewModel?.LoadItem(button.Name);
+            playing = false;
         }
         else
         {
