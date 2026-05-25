@@ -23,6 +23,21 @@
         <local:IsDownloadedToIconConverter x:Key="IsDownloadedConverter" />
     </Window.Resources>
 
+    <Window.Styles>
+        <Style Selector="ToggleButton PathIcon.playing">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+        <Style Selector="ToggleButton:checked PathIcon.playing">
+            <Setter Property="IsVisible" Value="True"/>
+        </Style>
+        <Style Selector="ToggleButton PathIcon.paused">
+            <Setter Property="IsVisible" Value="True"/>
+        </Style>
+        <Style Selector="ToggleButton:checked PathIcon.paused">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+    </Window.Styles>
+
     <StackPanel VerticalAlignment="Bottom">
         <StackPanel Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding PodcastFeeds}" 
@@ -81,13 +96,16 @@
                         Height="50" Margin="5" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button>
-            <Button Click="Play_OnClick">
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <PathIcon Data="{StaticResource play_regular}" Width="50" 
-                        Height="50" Margin="5" HorizontalAlignment="Center"
-                        Name="PlayButtonIcon"/>
-                </StackPanel>
-            </Button>
+            <ToggleButton Name="PlayButton" Click="Play_OnClick">
+                <Panel>
+                    <PathIcon Classes="paused" Data="{StaticResource play_regular}" Width="50" 
+                        Height="50" Margin="5" 
+                        HorizontalAlignment="Center" />
+                    <PathIcon Classes="playing" Data="{StaticResource pause_regular}" Width="50" 
+                        Height="50" Margin="5" 
+                        HorizontalAlignment="Center" />
+                </Panel>
+            </ToggleButton>
             <Button Click="Forward_OnClick">
                 <StackPanel Orientation="Horizontal" Spacing="6">
                     <PathIcon Data="{StaticResource caret_right_regular}" Width="50" 

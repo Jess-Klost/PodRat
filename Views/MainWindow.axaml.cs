@@ -44,18 +44,20 @@ public partial class MainWindow : Window
 
     private void Play_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (playing)
+        if (PlayButton.IsChecked == null)
         {
-            PlayButtonIcon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable("play_regular"));
-            playing = false;
+            return;
+        }
+        if (!(bool)PlayButton.IsChecked)
+        {
             viewModel?.PauseAudio();
         }
         else
         {
-            PlayButtonIcon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable("pause_regular"));
-            playing = true;
             viewModel?.PlayAudio();
         }
+
+        playing = (bool)PlayButton.IsChecked;
     }
 
     private void Volume_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
@@ -103,6 +105,7 @@ public partial class MainWindow : Window
         if (viewModel != null && viewModel.ItemDownloaded(button.Name))
         {
             viewModel?.LoadItem(button.Name);
+            PlayButton.IsChecked = false;
             playing = false;
         }
         else
