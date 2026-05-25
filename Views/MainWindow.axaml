@@ -71,7 +71,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center"></TextBlock>
+        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>
         <!-- Media Control -->
         <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged" Margin="10"></Slider>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

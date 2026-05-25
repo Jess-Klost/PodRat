@@ -126,5 +126,6 @@ public partial class MainWindowViewModel : ViewModelBase
             return;
         }
         audioPlayer.LoadAudio(DownloadManager.DownloadedItemPath(selectedFeed, item));
+        Title = item.Title.Text;
     }
 }
