@@ -17,13 +17,13 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         viewModel?.ChangeVolume((int)VolumeSlider.Value);
-        PositionSlider.AddHandler(PointerPressedEvent, Position_Pressed, 
-            routes: RoutingStrategies.Direct 
-                    | RoutingStrategies.Tunnel 
+        PositionSlider.AddHandler(PointerPressedEvent, Position_Pressed,
+            routes: RoutingStrategies.Direct
+                    | RoutingStrategies.Tunnel
                     | RoutingStrategies.Bubble, handledEventsToo: false);
-        PositionSlider.AddHandler(PointerReleasedEvent, Position_Released, 
-            routes: RoutingStrategies.Direct 
-                    | RoutingStrategies.Tunnel 
+        PositionSlider.AddHandler(PointerReleasedEvent, Position_Released,
+            routes: RoutingStrategies.Direct
+                    | RoutingStrategies.Tunnel
                     | RoutingStrategies.Bubble, handledEventsToo: false);
     }
 
@@ -99,5 +99,21 @@ public partial class MainWindow : Window
         if (feed == null)
             return;
         viewModel?.OnFeedChanged(feed);
+    }
+
+    private void AddFeed_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (AddFeedNameBox.Text != null && AddFeedRSSBox.Text != null)
+        {
+            viewModel?.AddFeed(AddFeedNameBox.Text, AddFeedRSSBox.Text);
+            AddFeedPopupButton?.Flyout?.Hide();
+        }
+    }
+
+    private void AddFeed_Closed(object? sender, System.EventArgs e)
+    {
+        // Clear text inputs when flyout is closed
+        AddFeedNameBox.Clear();
+        AddFeedRSSBox.Clear();
     }
 }

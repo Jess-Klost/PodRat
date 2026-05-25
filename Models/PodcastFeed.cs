@@ -1,5 +1,24 @@
+using System;
+
 public class PodcastFeed
 {
-    public required string Name { get; set; }
-    public required string Uri { get; set; }
+    public string Name { get; set; }
+    public string Uri { get; set; }
+
+    public PodcastFeed(string name, string uri)
+    {
+        if (!ValidName(name))
+            throw new ArgumentException("Name is invalid");
+        Name = name;
+        Uri = uri;
+    }
+
+    bool ValidName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return false;
+        }
+        return true;
+    }
 }

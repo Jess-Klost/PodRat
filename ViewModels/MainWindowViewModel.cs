@@ -18,7 +18,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<SyndicationItem>? CurrentFeed { get; set; }
     [ObservableProperty]
-    public partial ObservableCollection<PodcastFeed>? PodcastFeeds { get; set; } = new ObservableCollection<PodcastFeed> { new PodcastFeed { Name = "RTVS", Uri = "https://feed.podbean.com/wayneradiotv/feed.xml"}};
+    public partial ObservableCollection<PodcastFeed> PodcastFeeds { get; set; } = new ObservableCollection<PodcastFeed>();
 
     AudioPlayer audioPlayer;
     RSSFeedReader feedReader;
@@ -96,5 +96,11 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         selectedFeed = newFeed;
         PopulateFeed();
+    }
+
+    public void AddFeed(string name, string uri)
+    {
+        PodcastFeed feed = new PodcastFeed(name, uri);
+        PodcastFeeds.Add(feed);
     }
 }

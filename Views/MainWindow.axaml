@@ -29,6 +29,19 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <Button Content="Add Feed"  Name="AddFeedPopupButton">
+                <Button.Flyout>
+                    <Flyout Closed="AddFeed_Closed">
+                        <StackPanel>
+                            <Label Target="AddFeedNameBox" Content="Name" />
+                            <TextBox Name="AddFeedNameBox" Width="150" Margin="5"></TextBox>
+                            <Label Target="AddFeedRSSBox" Content="RSS Link" />
+                            <TextBox Name="AddFeedRSSBox" Width="150" Margin="5"></TextBox>
+                            <Button Click="AddFeed_OnClick" HorizontalAlignment="Right" Margin="5">Add</Button>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>    
+            </Button>
         </StackPanel>
         <ScrollViewer MaxHeight="300">
             <ItemsControl ItemsSource="{Binding CurrentFeed}">
