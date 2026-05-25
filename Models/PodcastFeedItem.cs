@@ -1,6 +1,5 @@
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 public class PodcastFeedItem
 {
