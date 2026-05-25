@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.ServiceModel.Syndication;
+using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -9,6 +11,7 @@ namespace RSSPod.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     const string DownloadDirectory = "AudioDownloads";
+    const string UserDataFile = "userdata.json";
 
     [ObservableProperty]
     public partial double Position { get; set; } = 0;
@@ -19,8 +22,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
-    public partial ObservableCollection<PodcastFeed> PodcastFeeds { get; set; } = new ObservableCollection<PodcastFeed>();
-
+    public partial UserData UserData { get; set; } = new UserData();
     public event EventHandler<string> DownloadComplete;
 
     AudioPlayer audioPlayer;
@@ -33,6 +35,30 @@ public partial class MainWindowViewModel : ViewModelBase
         audioPlayer = new AudioPlayer();
         audioPlayer.audioPositionChanged += AudioPositionChanged;
         audioPlayer.SetVolume((int)Volume);
+
+        LoadUserData();
+    }
+
+    void LoadUserData()
+    {
+        try
+        {
+            using StreamReader fileReader = new (UserDataFile);
+            string jsonString = fileReader.ReadToEnd();
+            UserData? data = JsonSerializer.Deserialize<UserData>(jsonString);
+            if (data != null)
+                UserData = data;
+        }
+        catch (FileNotFoundException)
+        {
+            return;
+        }
+    }
+
+    void SaveUserData()
+    {
+        string jsonString = JsonSerializer.Serialize(UserData);
+        File.WriteAllText(UserDataFile, jsonString);
     }
 
     async void PopulateFeed()
@@ -105,7 +131,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public void AddFeed(string name, string uri)
     {
         PodcastFeed feed = new PodcastFeed(name, uri);
-        PodcastFeeds.Add(feed);
+        UserData.PodcastFeeds.Add(feed);
+        SaveUserData();
     }
 
     public bool ItemDownloaded(string id)

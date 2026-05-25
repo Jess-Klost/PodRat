@@ -40,7 +40,7 @@
 
     <StackPanel VerticalAlignment="Bottom">
         <StackPanel Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding PodcastFeeds}" 
+            <ComboBox ItemsSource="{Binding UserData.PodcastFeeds}" 
                 PlaceholderText="Podcast Feed"
                 SelectionChanged="FeedSelector_OnChange">
                 <ComboBox.ItemTemplate>
