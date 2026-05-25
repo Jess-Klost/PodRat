@@ -1,8 +1,11 @@
+using System;
 using System.Diagnostics;
+using System.ServiceModel.Syndication;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using RSSPod.ViewModels;
 
 namespace RSSPod.Views;
@@ -25,6 +28,20 @@ public partial class MainWindow : Window
             routes: RoutingStrategies.Direct
                     | RoutingStrategies.Tunnel
                     | RoutingStrategies.Bubble, handledEventsToo: false);
+        DataContextChanged += InitializeDatacontext;
+        if (this.TryFindResource("play_regular", out object? playIcon) && playIcon != null)
+        {
+            IsDownloadedToIconConverter.playIcon = playIcon;
+        }
+        if (this.TryFindResource("arrow_download_regular", out object? downloadIcon) && downloadIcon != null)
+        {
+            IsDownloadedToIconConverter.downloadIcon = downloadIcon;
+        }
+    }
+
+    private void InitializeDatacontext(object? sender, EventArgs e)
+    {
+        viewModel?.DownloadComplete += OnItemDownloaded;
     }
 
     private void Play_OnClick(object? sender, RoutedEventArgs e)
@@ -78,14 +95,21 @@ public partial class MainWindow : Window
         viewModel?.FastForward(-10000);
     }
 
-    private void Download_OnClick(object? sender, RoutedEventArgs e)
+    private void InteractItem_OnClick(object? sender, RoutedEventArgs e)
     {
         if (e.Source == null)
             return;
         Button? button = e.Source as Button;
         if (button == null || button.Name == null)
             return;
-        viewModel?.DownloadItem(button.Name);
+        if (viewModel != null && viewModel.ItemDownloaded(button.Name))
+        {
+            viewModel?.LoadItem(button.Name);
+        }
+        else
+        {
+            viewModel?.DownloadItem(button.Name);
+        }
     }
 
     private void FeedSelector_OnChange(object? sender, SelectionChangedEventArgs e)
@@ -115,5 +139,43 @@ public partial class MainWindow : Window
         // Clear text inputs when flyout is closed
         AddFeedNameBox.Clear();
         AddFeedRSSBox.Clear();
+    }
+
+    void OnItemDownloaded(object? sender, string id)
+    {
+        SetItemButtonDownloadState(id, true);
+    }
+
+    void SetItemButtonDownloadState(string id, bool downloaded)
+    {
+        // Find button
+        Button? interactButton = null;
+        foreach(Avalonia.Visual child in FeedViewer.GetVisualDescendants())
+        {
+            if ((interactButton = child as Button) != null && interactButton.Name == id)
+            {
+                break;        
+            }
+        }
+        if (interactButton == null)
+            return;
+        PathIcon? icon = null;
+        foreach(Avalonia.Visual child in interactButton.GetVisualDescendants())
+        {
+            if ((icon = child as PathIcon) != null)
+            {
+                break;        
+            }
+        }
+        if (icon == null)
+            return;
+        
+        // Set to proper icon
+        string iconString;
+        if (downloaded)
+            iconString = "play_regular";
+        else
+            iconString = "download_regular";
+        icon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable(iconString));
     }
 }

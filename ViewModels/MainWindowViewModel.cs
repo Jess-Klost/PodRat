@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,9 +17,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial string Title { get; set; } = "Audio Title";
     [ObservableProperty]
-    public partial ObservableCollection<SyndicationItem>? CurrentFeed { get; set; }
+    public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeed> PodcastFeeds { get; set; } = new ObservableCollection<PodcastFeed>();
+
+    public event EventHandler<string> DownloadComplete;
 
     AudioPlayer audioPlayer;
     RSSFeedReader feedReader;
@@ -38,7 +41,7 @@ public partial class MainWindowViewModel : ViewModelBase
             return;
         feedReader = new RSSFeedReader(selectedFeed.Uri);
         await feedReader.ReadRSSFeed();
-        CurrentFeed = feedReader.GetFeedItems();
+        CurrentFeed = feedReader.GetFeedItems(selectedFeed);
     }
 
     void AudioPositionChanged(object? sender, float position)
@@ -89,6 +92,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
             await downloadManager.DownloadItem(selectedFeed, item);
+            DownloadComplete?.Invoke(this, id);
         }
     }
 
@@ -102,5 +106,25 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         PodcastFeed feed = new PodcastFeed(name, uri);
         PodcastFeeds.Add(feed);
+    }
+
+    public bool ItemDownloaded(string id)
+    {
+        if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
+            || selectedFeed == null)
+        {
+            return false;
+        }
+        return DownloadManager.IsDownloaded(selectedFeed, item);
+    }
+
+    public void LoadItem(string id)
+    {
+        if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
+            || selectedFeed == null)
+        {
+            return;
+        }
+        audioPlayer.LoadAudio(DownloadManager.DownloadedItemPath(selectedFeed, item));
     }
 }

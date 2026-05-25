@@ -44,11 +44,15 @@ public class RSSFeedReader
         return true;
     }
 
-    public ObservableCollection<SyndicationItem> GetFeedItems()
+    public ObservableCollection<PodcastFeedItem> GetFeedItems(PodcastFeed podcastFeed)
     {
         if (feed == null)
-            return new ObservableCollection<SyndicationItem>();
-        ObservableCollection<SyndicationItem> collection = [.. feed.Items];
+            return new ObservableCollection<PodcastFeedItem>();
+        ObservableCollection<PodcastFeedItem> collection = new ObservableCollection<PodcastFeedItem>();
+        foreach (SyndicationItem item in feed.Items)
+        {
+            collection.Add(new PodcastFeedItem { Feed = podcastFeed, Item = item });
+        }
         return collection;
     }
 

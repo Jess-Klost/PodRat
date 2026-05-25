@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public class DownloadManager
 {
-    string downloadDirectory = "AudioDownloads";
+    public static string downloadDirectory { get; set; } = "AudioDownloads";
 
     public DownloadManager()
     {
@@ -17,7 +17,7 @@ public class DownloadManager
 
     public DownloadManager(string downloadDirectory)
     {
-        this.downloadDirectory = downloadDirectory;
+        DownloadManager.downloadDirectory = downloadDirectory;
         if (!Directory.Exists(downloadDirectory))
             Directory.CreateDirectory(downloadDirectory);
     }
@@ -38,7 +38,7 @@ public class DownloadManager
             {
                 HttpResponseMessage response = await client.GetAsync(audioLink);
                 using (FileStream fs = 
-                    new FileStream(Path.Combine(downloadDirectory, feed.Name, audioLink.Segments.Last()), 
+                    new FileStream(DownloadedItemPath(feed, item, audioLink), 
                     FileMode.CreateNew))
                 {
                     await response.Content.CopyToAsync(fs); 
@@ -51,7 +51,16 @@ public class DownloadManager
         }
     }
 
-    bool FindAudioLink(SyndicationItem item, out Uri? audioLink)
+    public static bool IsDownloaded(PodcastFeed feed, SyndicationItem item)
+    {
+        if (FindAudioLink(item, out Uri? audioLink) && audioLink != null)
+        {
+            return File.Exists(DownloadedItemPath(feed, item, audioLink));
+        }
+        return false;
+    }
+
+    static bool FindAudioLink(SyndicationItem item, out Uri? audioLink)
     {
         foreach(SyndicationLink link in item.Links)
         {
@@ -63,5 +72,18 @@ public class DownloadManager
         }
         audioLink = null;
         return false;
+    }
+
+    public static string DownloadedItemPath(PodcastFeed feed, SyndicationItem item, Uri audioLink)
+    {
+        return Path.GetFullPath(Path.Combine(downloadDirectory, feed.Name, audioLink.Segments.Last()));
+    }
+
+    public static string DownloadedItemPath(PodcastFeed feed, SyndicationItem item)
+    {
+        FindAudioLink(item, out Uri? audioLink);
+        if (audioLink == null)
+            throw new InvalidOperationException("Download Manager: no AudioLink found on item, therefore download is impossible");
+        return DownloadedItemPath(feed, item, audioLink);
     }
 }
