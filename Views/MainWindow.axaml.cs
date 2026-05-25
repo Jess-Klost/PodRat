@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.ServiceModel.Syndication;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
