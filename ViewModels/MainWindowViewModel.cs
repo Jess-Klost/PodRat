@@ -79,12 +79,18 @@ public partial class MainWindowViewModel : ViewModelBase
         Position = position;
     }
 
+    /// <summary>
+    /// Called when audioPlayer is first starts playing the newly loaded audio
+    /// </summary>
     void PlayingStart(object? sender, EventArgs e)
     {
-        // Ignore if length is already set, prevents issue with random unexplained
-        // changes to length
-        if (LengthMS == 0) 
-            LengthMS = audioPlayer.GetLengthTime();
+        LengthMS = audioPlayer.GetLengthTime();
+        // Position has been set before first play, 
+        // must set it after audio is played for the first time
+        if (Position != 0) 
+        {
+            audioPlayer.SetPosition((float)Position);
+        }
     }
 
     public void PlayAudio()

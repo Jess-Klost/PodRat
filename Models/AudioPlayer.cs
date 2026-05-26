@@ -20,6 +20,7 @@ public class AudioPlayer
         get => _mediaPlayer;
         set => _mediaPlayer = value;
     }
+    private bool unplayed = false;
 
     public AudioPlayer()
     {
@@ -43,6 +44,7 @@ public class AudioPlayer
         Media media = new Media(LibVLC, uri);
         MediaPlayer.Media = media;
         media.Dispose();
+        unplayed = true;
         if (MediaPlayer == null)
         {
             return false;            
@@ -51,7 +53,7 @@ public class AudioPlayer
     }
 
     public void Play()
-    {
+    {   
         MediaPlayer.Play();         
     }
 
@@ -87,7 +89,11 @@ public class AudioPlayer
 
     void PlayingStart(object? sender, EventArgs e)
     {
-        playingStart.Invoke(this, EventArgs.Empty);   
+        if (unplayed)
+        {
+            unplayed = false;
+            playingStart.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public long GetLengthTime()
