@@ -1,4 +1,5 @@
 using System;
+using Avalonia.Remote.Protocol.Viewport;
 using LibVLCSharp.Shared;
 
 public class AudioPlayer
@@ -10,6 +11,9 @@ public class AudioPlayer
         private set => _libVLC = value;
     }
     public EventHandler<float> audioPositionChanged;
+    public EventHandler<long> audioLengthChanged;
+    public EventHandler playingStart;
+
     private MediaPlayer _mediaPlayer;
     private MediaPlayer MediaPlayer
     {
@@ -21,7 +25,8 @@ public class AudioPlayer
     {
         LibVLC = new LibVLC(enableDebugLogs: true);
         MediaPlayer = new MediaPlayer(LibVLC);
-        MediaPlayer.PositionChanged += OnPositionChanged;    
+        MediaPlayer.PositionChanged += OnPositionChanged;
+        MediaPlayer.Playing += PlayingStart;
     }
 
     public bool LoadAudio(string path)
@@ -35,7 +40,9 @@ public class AudioPlayer
         {
             return false;
         }
-        MediaPlayer.Media = new Media(LibVLC, uri);
+        Media media = new Media(LibVLC, uri);
+        MediaPlayer.Media = media;
+        media.Dispose();
         if (MediaPlayer == null)
         {
             return false;            
@@ -78,7 +85,12 @@ public class AudioPlayer
         audioPositionChanged?.Invoke(this, eventArgs.Position); 
     }
 
-    public float GetLengthTime()
+    void PlayingStart(object? sender, EventArgs e)
+    {
+        playingStart.Invoke(this, EventArgs.Empty);   
+    }
+
+    public long GetLengthTime()
     {
         return MediaPlayer.Length;
     }

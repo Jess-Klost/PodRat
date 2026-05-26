@@ -16,6 +16,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial double Position { get; set; } = 0;
     [ObservableProperty]
+    public partial long LengthMS { get; set; }
+    [ObservableProperty]
     public partial double Volume { get; set; } = 50;
     [ObservableProperty]
     public partial string Title { get; set; } = "Audio Title";
@@ -23,6 +25,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
     public partial UserData UserData { get; set; } = new UserData();
+
     public event EventHandler<string> DownloadComplete;
 
     AudioPlayer audioPlayer;
@@ -34,6 +37,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         audioPlayer = new AudioPlayer();
         audioPlayer.audioPositionChanged += AudioPositionChanged;
+        audioPlayer.playingStart += PlayingStart;
         audioPlayer.SetVolume((int)Volume);
 
         LoadUserData();
@@ -73,6 +77,14 @@ public partial class MainWindowViewModel : ViewModelBase
     void AudioPositionChanged(object? sender, float position)
     {
         Position = position;
+    }
+
+    void PlayingStart(object? sender, EventArgs e)
+    {
+        // Ignore if length is already set, prevents issue with random unexplained
+        // changes to length
+        if (LengthMS == 0) 
+            LengthMS = audioPlayer.GetLengthTime();
     }
 
     public void PlayAudio()
@@ -155,5 +167,6 @@ public partial class MainWindowViewModel : ViewModelBase
         audioPlayer.LoadAudio(DownloadManager.DownloadedItemPath(selectedFeed, item));
         Title = item.Title.Text;
         Position = 0;
+        LengthMS = 0;
     }
 }
