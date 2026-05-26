@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using LibVLCSharp.Shared;
 
 namespace RSSPod;
 
