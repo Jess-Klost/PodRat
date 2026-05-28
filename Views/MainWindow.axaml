@@ -41,8 +41,8 @@
     </Window.Styles>
 
     <DockPanel>
-        <StackPanel DockPanel.Dock="Left">
-            <StackPanel Name="FeedControls" Orientation="Horizontal">
+        <DockPanel DockPanel.Dock="Left">
+            <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
                 <ComboBox ItemsSource="{Binding UserData.PodcastFeeds}" 
                     PlaceholderText="Podcast Feed"
                     SelectionChanged="FeedSelector_OnChange">
@@ -52,7 +52,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Content="Add Feed"  Name="AddFeedPopupButton">
+                <Button Content="Add Feed"  Name="AddFeedPopupButton" >
                     <Button.Flyout>
                         <Flyout Closed="AddFeed_Closed">
                             <StackPanel>
@@ -65,9 +65,10 @@
                         </Flyout>
                     </Button.Flyout>    
                 </Button>
+                <ProgressBar Value="{Binding DownloadProgress}"/>
             </StackPanel>
-            <ScrollViewer>
-            <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedViewer">
+            <ScrollViewer DockPanel.Dock="Bottom">
+                <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedViewer">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border CornerRadius="16" Padding="12,6" Margin="4">
@@ -88,8 +89,8 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </ScrollViewer>
-        </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
         <!-- Media Control -->
         <StackPanel Orientation="Vertical" Name="MediaControl" DockPanel.Dock="Right" VerticalAlignment="Bottom">
             <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>

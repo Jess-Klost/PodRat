@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Threading.Tasks;
 
 public class DownloadManager
@@ -22,7 +23,7 @@ public class DownloadManager
             Directory.CreateDirectory(downloadDirectory);
     }
 
-    public async Task DownloadItem(PodcastFeed feed, SyndicationItem item)
+    public async Task DownloadItem(PodcastFeed feed, SyndicationItem item, IProgress<float>? progress = null, CancellationToken cancellationToken = default)
     {
         if (!Directory.Exists(Path.Combine(downloadDirectory, feed.Name)))
             Directory.CreateDirectory(Path.Combine(downloadDirectory, feed.Name));
@@ -36,18 +37,59 @@ public class DownloadManager
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync(audioLink);
-                using (FileStream fs = 
-                    new FileStream(DownloadedItemPath(feed, item, audioLink), 
-                    FileMode.CreateNew))
+                using (var response = await client.GetAsync (audioLink, HttpCompletionOption.ResponseHeadersRead)) 
                 {
-                    await response.Content.CopyToAsync(fs); 
-                }  
+                    var contentLength = response.Content.Headers.ContentLength;
+                    using (var download = await response.Content.ReadAsStreamAsync ())
+                    using (FileStream fs = 
+                        new FileStream(DownloadedItemPath(feed, item, audioLink), 
+                        FileMode.CreateNew)) 
+                    {
+                        if (progress is null || !contentLength.HasValue) 
+                        {
+                            await download.CopyToAsync(fs);
+                            return;
+                        }
+                        var progressWrapper = new Progress<long> (totalBytes =>
+                             progress.Report(GetProgressPercentage (totalBytes, contentLength.Value)));
+                        await CopyToAsync(download, fs, 81920, progressWrapper, cancellationToken);
+                    }
+                }
+
+                float GetProgressPercentage (float totalBytes, float currentBytes) => (totalBytes / currentBytes) * 100f;
             } 
             catch (InvalidOperationException)
             {
                 return;
             }
+        }
+    }
+
+    static async Task CopyToAsync(Stream source, Stream destination,
+        int bufferSize = 81920, IProgress<long>? progress = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (bufferSize < 0)
+            throw new ArgumentOutOfRangeException(nameof(bufferSize));
+        if (source is null)
+            throw new ArgumentNullException(nameof(source));
+        if (!source.CanRead)
+            throw new InvalidOperationException($"'{nameof (source)}' is not readable.");
+        if (destination == null)
+            throw new ArgumentNullException (nameof(destination));
+        if (!destination.CanWrite)
+            throw new InvalidOperationException($"'{nameof (destination)}' is not writable.");
+
+        var buffer = new byte[bufferSize];
+        long totalBytesRead = 0;
+        int bytesRead;
+        while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length,
+            cancellationToken).ConfigureAwait (false)) != 0)
+        {
+            await destination.WriteAsync(buffer, 0, bytesRead, 
+                cancellationToken).ConfigureAwait (false);
+            totalBytesRead += bytesRead;
+            progress?.Report(totalBytesRead);
         }
     }
 

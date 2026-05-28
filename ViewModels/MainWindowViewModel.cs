@@ -25,6 +25,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
     public partial UserData UserData { get; set; } = new UserData();
+    [ObservableProperty]
+    public partial float DownloadProgress { get; set; }
 
     public event EventHandler<string> DownloadComplete;
 
@@ -135,9 +137,16 @@ public partial class MainWindowViewModel : ViewModelBase
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
-            await downloadManager.DownloadItem(selectedFeed, item);
+            Progress<float> progress = new Progress<float>();
+            progress.ProgressChanged += UpdateProgress;
+            await downloadManager.DownloadItem(selectedFeed, item, progress);
             DownloadComplete?.Invoke(this, id);
         }
+    }
+
+    void UpdateProgress(object? sender, float progress)
+    {
+        DownloadProgress = progress;
     }
 
     public void OnFeedChanged(PodcastFeed newFeed)
