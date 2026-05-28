@@ -40,6 +40,7 @@ public partial class MainWindow : Window
     private void InitializeDatacontext(object? sender, EventArgs e)
     {
         viewModel?.DownloadComplete += OnItemDownloaded;
+        viewModel?.ProgressChanged += UpdateProgress;
     }
 
     private void Play_OnClick(object? sender, RoutedEventArgs e)
@@ -151,24 +152,10 @@ public partial class MainWindow : Window
     void SetItemButtonDownloadState(string id, bool downloaded)
     {
         // Find button
-        Button? interactButton = null;
-        foreach(Avalonia.Visual child in FeedViewer.GetVisualDescendants())
-        {
-            if ((interactButton = child as Button) != null && interactButton.Name == id)
-            {
-                break;        
-            }
-        }
+        Button? interactButton = FindNamedChild(id, FeedViewer) as Button;
         if (interactButton == null)
             return;
-        PathIcon? icon = null;
-        foreach(Avalonia.Visual child in interactButton.GetVisualDescendants())
-        {
-            if ((icon = child as PathIcon) != null)
-            {
-                break;        
-            }
-        }
+        PathIcon? icon = FindChildOfType<PathIcon>(interactButton) as PathIcon;
         if (icon == null)
             return;
         
@@ -179,5 +166,40 @@ public partial class MainWindow : Window
         else
             iconString = "download_regular";
         icon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable(iconString));
+    }
+
+    void UpdateProgress(string itemId, float progress)
+    {
+        Button? interactButton = FindNamedChild(itemId, FeedViewer) as Button;
+        if (interactButton == null)
+            return;
+        ProgressBar? progressBar = FindChildOfType<ProgressBar>(interactButton) as ProgressBar;
+        if (progressBar == null)
+            return;
+        progressBar.Value = progress;
+    }
+
+    Avalonia.Visual? FindNamedChild(string name, Control parent)
+    {
+        foreach(Avalonia.Visual child in parent.GetVisualDescendants())
+        {
+            if (child.Name == name)
+            {
+                return child;
+            }        
+        }
+        return null;
+    }
+
+    Avalonia.Visual? FindChildOfType<T>(Control parent)
+    {
+        foreach(Avalonia.Visual child in parent.GetVisualDescendants())
+        {
+            if (child is T)
+            {
+                return child;
+            }        
+        }
+        return null;
     }
 }

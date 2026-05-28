@@ -65,7 +65,6 @@
                         </Flyout>
                     </Button.Flyout>    
                 </Button>
-                <ProgressBar Value="{Binding DownloadProgress}"/>
             </StackPanel>
             <ScrollViewer DockPanel.Dock="Bottom">
                 <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedViewer">
@@ -80,9 +79,12 @@
                                         <TextBlock Text="{Binding Item.Summary.Text}" />
                                     </Expander>
                                     <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick">
+                                        <StackPanel>
                                         <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
                                             Width="20" Height="20" Margin="5"
                                             HorizontalAlignment="Center"/>
+                                        <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}"></ProgressBar>
+                                        </StackPanel>
                                     </Button> 
                                 </StackPanel>
                         </Border>
