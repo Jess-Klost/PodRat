@@ -1,5 +1,4 @@
 using System;
-using Avalonia.Remote.Protocol.Viewport;
 using LibVLCSharp.Shared;
 
 public class AudioPlayer
