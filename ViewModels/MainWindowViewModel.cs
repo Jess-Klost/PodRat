@@ -4,6 +4,7 @@ using System.IO;
 using System.ServiceModel.Syndication;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RSSPod.ViewModels;
@@ -153,6 +154,16 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         PodcastFeed feed = new PodcastFeed(name, uri);
         UserData.PodcastFeeds.Add(feed);
+        SaveUserData();
+    }
+
+    public void RemoveFeed()
+    {
+        if (selectedFeed == null)
+            return;
+        UserData.PodcastFeeds.Remove(selectedFeed);
+        downloadManager.DeleteFeed(selectedFeed);
+        CurrentFeed = null;
         SaveUserData();
     }
 

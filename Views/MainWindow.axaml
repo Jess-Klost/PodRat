@@ -69,6 +69,15 @@
                         </Flyout>
                     </Button.Flyout>    
                 </Button>
+                <Button> 
+                    <PathIcon Data="{StaticResource options_regular}" Width="15" 
+                            Height="15" HorizontalAlignment="Center"/>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuItem Header="Delete" Click="RemoveFeed_OnClick"></MenuItem>    
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
             </StackPanel>
             <ScrollViewer DockPanel.Dock="Bottom">
                 <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedViewer">

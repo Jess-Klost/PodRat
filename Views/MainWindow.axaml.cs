@@ -127,6 +127,11 @@ public partial class MainWindow : Window
         viewModel?.DeleteItem(id);
     }
 
+    private void RemoveFeed_OnClick(object? sender, RoutedEventArgs e)
+    {
+        viewModel?.RemoveFeed();
+    }
+
     private void FeedSelector_OnChange(object? sender, SelectionChangedEventArgs e)
     {
         if (e.Source == null)

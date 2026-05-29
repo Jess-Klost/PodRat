@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.FileIO;
 
 public class DownloadManager
 {
@@ -70,6 +71,11 @@ public class DownloadManager
         if (!IsDownloaded(feed, item))
             return;
         File.Delete(DownloadedItemPath(feed, item));
+    }
+
+    public void DeleteFeed(PodcastFeed feed)
+    {
+        Directory.Delete(Path.Combine(downloadDirectory, feed.Name), true);
     }
 
     static async Task CopyToAsync(Stream source, Stream destination,
