@@ -22,7 +22,7 @@
     <Window.Resources>
         <local:IsDownloadedToIconConverter x:Key="IsDownloadedConverter" />
         <local:TimeFormatConverter x:Key="TimeFormatConverter" />
-
+        <local:HTMLConverter x:Key="HTMLConverter" />
     </Window.Resources>
 
     <Window.Styles>
@@ -76,7 +76,7 @@
                                         <Expander.Header>
                                                 <TextBlock Text="{Binding Item.Title.Text}" MaxWidth="270" TextTrimming="CharacterEllipsis"/>
                                         </Expander.Header>
-                                        <TextBlock Text="{Binding Item.Summary.Text}" />
+                                        <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
                                     </Expander>
                                     <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick">
                                         <StackPanel>
