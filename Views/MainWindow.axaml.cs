@@ -162,7 +162,14 @@ public partial class MainWindow : Window
         // Set to proper icon
         string iconString;
         if (downloaded)
+        {
             iconString = "play_regular";
+            ProgressBar? progressBar = FindChildOfType<ProgressBar>(interactButton) as ProgressBar;
+            if (progressBar != null)
+            {
+                progressBar.IsVisible = false;
+            }
+        }
         else
             iconString = "download_regular";
         icon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable(iconString));
