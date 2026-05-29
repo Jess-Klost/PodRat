@@ -75,7 +75,10 @@ public class DownloadManager
 
     public void DeleteFeed(PodcastFeed feed)
     {
-        Directory.Delete(Path.Combine(downloadDirectory, feed.Name), true);
+        if (Directory.Exists(Path.Combine(downloadDirectory, feed.Name)))
+        {
+            Directory.Delete(Path.Combine(downloadDirectory, feed.Name), true);        
+        }
     }
 
     static async Task CopyToAsync(Stream source, Stream destination,
