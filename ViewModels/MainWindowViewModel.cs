@@ -26,7 +26,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial UserData UserData { get; set; } = new UserData();
 
-    public event EventHandler<string> DownloadComplete;
+    public event EventHandler<string, bool> UpdateDownloadStatus;
     public event EventHandler<string, float> ProgressChanged;
 
     AudioPlayer audioPlayer;
@@ -136,11 +136,10 @@ public partial class MainWindowViewModel : ViewModelBase
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
-
             Progress<float> progress = new Progress<float>();
             progress.ProgressChanged += (sender, progress) => ProgressChanged.Invoke(id, progress);
             await downloadManager.DownloadItem(selectedFeed, item, progress);
-            DownloadComplete?.Invoke(this, id);
+            UpdateDownloadStatus?.Invoke(id, true);
         }
     }
 
@@ -178,5 +177,16 @@ public partial class MainWindowViewModel : ViewModelBase
         Title = item.Title.Text;
         Position = 0;
         LengthMS = 0;
+    }
+
+    public void DeleteItem(string id)
+    {
+        if (selectedFeed == null)
+            return;
+        if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
+        {
+            downloadManager.DeleteItem(selectedFeed, item);
+            UpdateDownloadStatus?.Invoke(id, false);
+        }
     }
 }

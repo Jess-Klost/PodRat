@@ -40,8 +40,12 @@
         </Style>
     </Window.Styles>
 
-    <DockPanel>
-        <DockPanel DockPanel.Dock="Left">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
             <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
                 <ComboBox ItemsSource="{Binding UserData.PodcastFeeds}" 
                     PlaceholderText="Podcast Feed"
@@ -74,9 +78,12 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Expander Width="330" ToolTip.Tip="{Binding Item.Title.Text}">
                                         <Expander.Header>
-                                                <TextBlock Text="{Binding Item.Title.Text}" MaxWidth="270" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Item.Title.Text}" MaxWidth="270" TextTrimming="CharacterEllipsis"/>
                                         </Expander.Header>
-                                        <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
+                                        <StackPanel>
+                                                <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                                <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
+                                        </StackPanel>
                                     </Expander>
                                     <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick">
                                         <StackPanel>
@@ -94,7 +101,7 @@
             </ScrollViewer>
         </DockPanel>
         <!-- Media Control -->
-        <StackPanel Orientation="Vertical" Name="MediaControl" DockPanel.Dock="Right" VerticalAlignment="Bottom">
+        <StackPanel Orientation="Vertical" Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
             <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>
             <StackPanel Margin="10">
                 <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
@@ -152,5 +159,5 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-    </DockPanel>
+    </Grid>
 </Window>

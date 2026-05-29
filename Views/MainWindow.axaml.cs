@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -39,7 +40,7 @@ public partial class MainWindow : Window
 
     private void InitializeDatacontext(object? sender, EventArgs e)
     {
-        viewModel?.DownloadComplete += OnItemDownloaded;
+        viewModel?.UpdateDownloadStatus += OnItemDownloadedChanged;
         viewModel?.ProgressChanged += UpdateProgress;
     }
 
@@ -114,6 +115,17 @@ public partial class MainWindow : Window
             viewModel?.DownloadItem(button.Name);
         }
     }
+    
+    private void DeleteItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (e.Source == null)
+            return;
+        Button? button = e.Source as Button;
+        string? id;
+        if (button == null || button.Tag == null || (id = button.Tag as string) == null)
+            return;
+        viewModel?.DeleteItem(id);
+    }
 
     private void FeedSelector_OnChange(object? sender, SelectionChangedEventArgs e)
     {
@@ -144,9 +156,9 @@ public partial class MainWindow : Window
         AddFeedRSSBox.Clear();
     }
 
-    void OnItemDownloaded(object? sender, string id)
+    void OnItemDownloadedChanged(string id, bool downloaded)
     {
-        SetItemButtonDownloadState(id, true);
+        SetItemButtonDownloadState(id, downloaded);
     }
 
     void SetItemButtonDownloadState(string id, bool downloaded)
@@ -159,19 +171,23 @@ public partial class MainWindow : Window
         if (icon == null)
             return;
         
+        // Set progress bar visibility
+        ProgressBar? progressBar = FindChildOfType<ProgressBar>(interactButton) as ProgressBar;
+        if (progressBar != null)
+        {
+            progressBar.Value = 0;
+            progressBar.IsVisible = !downloaded;
+        }
+
+        
         // Set to proper icon
         string iconString;
         if (downloaded)
         {
             iconString = "play_regular";
-            ProgressBar? progressBar = FindChildOfType<ProgressBar>(interactButton) as ProgressBar;
-            if (progressBar != null)
-            {
-                progressBar.IsVisible = false;
-            }
         }
         else
-            iconString = "download_regular";
+            iconString = "arrow_download_regular";
         icon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable(iconString));
     }
 

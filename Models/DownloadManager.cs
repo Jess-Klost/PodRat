@@ -37,10 +37,10 @@ public class DownloadManager
         {
             try
             {
-                using (var response = await client.GetAsync (audioLink, HttpCompletionOption.ResponseHeadersRead)) 
+                using (var response = await client.GetAsync(audioLink, HttpCompletionOption.ResponseHeadersRead)) 
                 {
                     var contentLength = response.Content.Headers.ContentLength;
-                    using (var download = await response.Content.ReadAsStreamAsync ())
+                    using (var download = await response.Content.ReadAsStreamAsync())
                     using (FileStream fs = 
                         new FileStream(DownloadedItemPath(feed, item, audioLink), 
                         FileMode.CreateNew)) 
@@ -63,6 +63,13 @@ public class DownloadManager
                 return;
             }
         }
+    }
+
+    public void DeleteItem(PodcastFeed feed, SyndicationItem item)
+    {
+        if (!IsDownloaded(feed, item))
+            return;
+        File.Delete(DownloadedItemPath(feed, item));
     }
 
     static async Task CopyToAsync(Stream source, Stream destination,
