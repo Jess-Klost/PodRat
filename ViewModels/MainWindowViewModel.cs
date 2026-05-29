@@ -21,7 +21,9 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial double Volume { get; set; } = 50;
     [ObservableProperty]
-    public partial string Title { get; set; } = "Audio Title";
+    public partial string Title { get; set; }
+    [ObservableProperty]
+    public partial string Author { get; set; }
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
@@ -117,8 +119,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void FastForward(float time)
     {
+        if (LengthMS == 0)
+            return;
         float percentChange = TimeToPercent(time);
         audioPlayer.SetPosition(audioPlayer.GetPosition() + percentChange);
+        // Change position property for immediate UI feedback
+        Position += percentChange;
+        Position = Math.Clamp(Position, 0, 1.0);
     }
 
     public bool IsPlaying()
@@ -186,6 +193,7 @@ public partial class MainWindowViewModel : ViewModelBase
         }
         audioPlayer.LoadAudio(DownloadManager.DownloadedItemPath(selectedFeed, item));
         Title = item.Title.Text;
+        Author = selectedFeed.Name;
         Position = 0;
         LengthMS = 0;
     }

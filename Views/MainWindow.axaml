@@ -112,6 +112,7 @@
         <!-- Media Control -->
         <StackPanel Orientation="Vertical" Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
             <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>
+            <TextBlock Text="{Binding Author}" HorizontalAlignment="Center" Margin="5"></TextBlock>
             <StackPanel Margin="10">
                 <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
                 <Panel>
