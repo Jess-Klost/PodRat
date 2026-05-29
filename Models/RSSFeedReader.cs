@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 public class RSSFeedReader
 {
@@ -64,6 +65,29 @@ public class RSSFeedReader
             return false;
         }
         item = itemsDict[id];
+        foreach (SyndicationElementExtension extension in item.ElementExtensions)
+        {
+            XElement element = extension.GetObject<XElement>();
+        }
         return item != null;
+    }
+
+    public static bool GetImageFromItem(SyndicationItem item, out string imageLink)
+    {
+        foreach (SyndicationElementExtension extension in item.ElementExtensions)
+        {
+            XElement element = extension.GetObject<XElement>();
+            if (element.FirstAttribute != null && element.FirstAttribute.Value != null)
+            {
+                if (element.Name.LocalName == "image")
+                {
+                    imageLink = element.FirstAttribute.Value;
+                    return true;
+                }
+            }
+            
+        }
+        imageLink = "";
+        return false;
     }
 }

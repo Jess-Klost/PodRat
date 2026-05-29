@@ -5,6 +5,7 @@ using System.ServiceModel.Syndication;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RSSPod.ViewModels;
@@ -25,6 +26,9 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial string Author { get; set; }
     [ObservableProperty]
+    public partial string ThumbnailLink { get; set; }
+    
+    [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
     public partial UserData UserData { get; set; } = new UserData();
@@ -36,6 +40,7 @@ public partial class MainWindowViewModel : ViewModelBase
     RSSFeedReader feedReader;
     DownloadManager downloadManager = new DownloadManager(DownloadDirectory);
     PodcastFeed? selectedFeed;
+    SyndicationItem loadedItem;
 
     public MainWindowViewModel()
     {
@@ -194,6 +199,9 @@ public partial class MainWindowViewModel : ViewModelBase
         audioPlayer.LoadAudio(DownloadManager.DownloadedItemPath(selectedFeed, item));
         Title = item.Title.Text;
         Author = selectedFeed.Name;
+        RSSFeedReader.GetImageFromItem(item, out string imageResult);
+        ThumbnailLink = imageResult;
+        loadedItem = item;
         Position = 0;
         LengthMS = 0;
     }
