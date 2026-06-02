@@ -11,21 +11,10 @@ namespace RSSPod.Views;
 public partial class MainWindow : Window
 {
     private MainWindowViewModel? viewModel => DataContext as MainWindowViewModel;
-    bool playing = false;
-    bool editingPosition = false;
 
     public MainWindow()
     {
         InitializeComponent();
-        viewModel?.ChangeVolume((int)VolumeSlider.Value);
-        PositionSlider.AddHandler(PointerPressedEvent, Position_Pressed,
-            routes: RoutingStrategies.Direct
-                    | RoutingStrategies.Tunnel
-                    | RoutingStrategies.Bubble, handledEventsToo: false);
-        PositionSlider.AddHandler(PointerReleasedEvent, Position_Released,
-            routes: RoutingStrategies.Direct
-                    | RoutingStrategies.Tunnel
-                    | RoutingStrategies.Bubble, handledEventsToo: false);
         DataContextChanged += InitializeDatacontext;
         if (this.TryFindResource("play_regular", out object? playIcon) && playIcon != null)
         {
@@ -44,59 +33,6 @@ public partial class MainWindow : Window
         viewModel?.ProgressChanged += UpdateProgress;
     }
 
-    private void Play_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (PlayButton.IsChecked == null)
-        {
-            return;
-        }
-        if (!(bool)PlayButton.IsChecked)
-        {
-            viewModel?.PauseAudio();
-        }
-        else
-        {
-            viewModel?.PlayAudio();
-        }
-
-        playing = (bool)PlayButton.IsChecked;
-    }
-
-    private void Volume_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
-    {
-        viewModel?.ChangeVolume((int)VolumeSlider.Value);
-    }
-
-    private void Position_Pressed(object? sender, PointerPressedEventArgs e)
-    {
-        editingPosition = true;
-        if (playing)
-            viewModel?.PauseAudio();
-    }
-
-    private void Position_Released(object? sender, PointerReleasedEventArgs e)
-    {
-        editingPosition = false;
-        if (playing)
-            viewModel?.PlayAudio();
-    }
-
-    private void Position_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
-    {
-        if (editingPosition)
-            viewModel?.EditPosition((float)PositionSlider.Value);
-    }
-
-    private void Forward_OnClick(object? sender, RoutedEventArgs e)
-    {
-        viewModel?.FastForward(10000);
-    }
-
-    private void Backward_OnClick(object? sender, RoutedEventArgs e)
-    {
-        viewModel?.FastForward(-10000);
-    }
-
     private void InteractItem_OnClick(object? sender, RoutedEventArgs e)
     {
         if (e.Source == null)
@@ -106,9 +42,11 @@ public partial class MainWindow : Window
             return;
         if (viewModel != null && viewModel.ItemDownloaded(button.Name))
         {
-            viewModel?.LoadItem(button.Name);
-            PlayButton.IsChecked = false;
-            playing = false;
+            PodcastFeedItem? item = viewModel?.GetItem(button.Name);
+            if (item != null)
+            {
+                MediaPlayerControl.LoadItem(item);
+            }
         }
         else
         {

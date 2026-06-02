@@ -11,4 +11,15 @@ public class PodcastFeedItem
     {
         return DownloadManager.IsDownloaded(Feed, Item);    
     }
+
+    public string GetAudioPath()
+    {
+        return DownloadManager.DownloadedItemPath(Feed, Item);
+    }
+
+    public string GetThumbnailLink()
+    {
+        RSSFeedReader.GetImageFromItem(Item, out string imageResult);
+        return imageResult;
+    }
 }
