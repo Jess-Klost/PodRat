@@ -27,20 +27,6 @@
         <local:HTMLConverter x:Key="HTMLConverter" />
     </Window.Resources>
 
-    <Window.Styles>
-        <Style Selector="ToggleButton PathIcon.playing">
-            <Setter Property="IsVisible" Value="False"/>
-        </Style>
-        <Style Selector="ToggleButton:checked PathIcon.playing">
-            <Setter Property="IsVisible" Value="True"/>
-        </Style>
-        <Style Selector="ToggleButton PathIcon.paused">
-            <Setter Property="IsVisible" Value="True"/>
-        </Style>
-        <Style Selector="ToggleButton:checked PathIcon.paused">
-            <Setter Property="IsVisible" Value="False"/>
-        </Style>
-    </Window.Styles>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

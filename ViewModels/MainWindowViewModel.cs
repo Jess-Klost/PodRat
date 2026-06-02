@@ -22,7 +22,6 @@ public partial class MainWindowViewModel : ViewModelBase
     RSSFeedReader feedReader;
     DownloadManager downloadManager = new DownloadManager(DownloadDirectory);
     PodcastFeed? selectedFeed;
-    SyndicationItem loadedItem;
 
     public MainWindowViewModel()
     {

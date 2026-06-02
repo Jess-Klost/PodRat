@@ -15,6 +15,21 @@
          <local:TimeFormatConverter x:Key="TimeFormatConverter" />    
     </UserControl.Resources>
 
+    <UserControl.Styles>
+        <Style Selector="ToggleButton PathIcon.playing">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+        <Style Selector="ToggleButton:checked PathIcon.playing">
+            <Setter Property="IsVisible" Value="True"/>
+        </Style>
+        <Style Selector="ToggleButton PathIcon.paused">
+            <Setter Property="IsVisible" Value="True"/>
+        </Style>
+        <Style Selector="ToggleButton:checked PathIcon.paused">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+    </UserControl.Styles>
+
     <StackPanel Orientation="Vertical" Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
         <Image Margin="20" MaxHeight="300" MaxWidth="300" asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
         <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>
