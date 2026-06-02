@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -36,6 +35,7 @@ public partial class MainWindow : Window
         {
             IsDownloadedToIconConverter.downloadIcon = downloadIcon;
         }
+        FeedAdderFlyout.AddFeedSubmitted += OnFeedAdderSubmit;
     }
 
     private void InitializeDatacontext(object? sender, EventArgs e)
@@ -145,20 +145,14 @@ public partial class MainWindow : Window
         viewModel?.OnFeedChanged(feed);
     }
 
-    private void AddFeed_OnClick(object? sender, RoutedEventArgs e)
+    private void OnFeedAdderSubmit(object? sender, EventArgs e)
     {
-        if (AddFeedNameBox.Text != null && AddFeedRSSBox.Text != null)
-        {
-            viewModel?.AddFeed(AddFeedNameBox.Text, AddFeedRSSBox.Text);
-            AddFeedPopupButton?.Flyout?.Hide();
-        }
+        AddFeedPopupButton?.Flyout?.Hide();
     }
 
     private void AddFeed_Closed(object? sender, System.EventArgs e)
     {
-        // Clear text inputs when flyout is closed
-        AddFeedNameBox.Clear();
-        AddFeedRSSBox.Clear();
+        FeedAdderFlyout.Reset();
     }
 
     void OnItemDownloadedChanged(string id, bool downloaded)

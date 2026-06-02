@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
         xmlns:local="clr-namespace:RSSPod;assembly=RSSPod"
+        xmlns:views="clr-namespace:RSSPod.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="RSSPod.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -40,7 +41,6 @@
             <Setter Property="IsVisible" Value="False"/>
         </Style>
     </Window.Styles>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -61,11 +61,7 @@
                     <Button.Flyout>
                         <Flyout Closed="AddFeed_Closed">
                             <StackPanel>
-                                <Label Target="AddFeedNameBox" Content="Name" />
-                                <TextBox Name="AddFeedNameBox" Width="150" Margin="5"></TextBox>
-                                <Label Target="AddFeedRSSBox" Content="RSS Link" />
-                                <TextBox Name="AddFeedRSSBox" Width="150" Margin="5"></TextBox>
-                                <Button Click="AddFeed_OnClick" HorizontalAlignment="Right" Margin="5">Add</Button>
+                                <views:FeedAdder Name="FeedAdderFlyout" />
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>    
@@ -112,7 +108,7 @@
         </DockPanel>
         <!-- Media Control -->
         <StackPanel Orientation="Vertical" Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
-             <Image Margin="20" MaxHeight="300" MaxWidth="300" asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
+            <Image Margin="20" MaxHeight="300" MaxWidth="300" asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
             <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>
             <TextBlock Text="{Binding Author}" HorizontalAlignment="Center" Margin="5"></TextBlock>
             <StackPanel Margin="10">

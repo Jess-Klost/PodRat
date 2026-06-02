@@ -2,10 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.ServiceModel.Syndication;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RSSPod.ViewModels;
@@ -13,7 +10,6 @@ namespace RSSPod.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     const string DownloadDirectory = "AudioDownloads";
-    const string UserDataFile = "userdata.json";
 
     [ObservableProperty]
     public partial double Position { get; set; } = 0;
@@ -31,7 +27,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
-    public partial UserData UserData { get; set; } = new UserData();
+    public partial UserData UserData { get; set; }
 
     public event EventHandler<string, bool> UpdateDownloadStatus;
     public event EventHandler<string, float> ProgressChanged;
@@ -48,30 +44,19 @@ public partial class MainWindowViewModel : ViewModelBase
         audioPlayer.audioPositionChanged += AudioPositionChanged;
         audioPlayer.playingStart += PlayingStart;
         audioPlayer.SetVolume((int)Volume);
-
+        UserData = UserDataInstancer.GetUserData();
         LoadUserData();
     }
 
     void LoadUserData()
     {
-        try
-        {
-            using StreamReader fileReader = new (UserDataFile);
-            string jsonString = fileReader.ReadToEnd();
-            UserData? data = JsonSerializer.Deserialize<UserData>(jsonString);
-            if (data != null)
-                UserData = data;
-        }
-        catch (FileNotFoundException)
-        {
-            return;
-        }
+        UserDataInstancer.LoadUserData();
+        UserData = UserDataInstancer.GetUserData();
     }
 
     void SaveUserData()
     {
-        string jsonString = JsonSerializer.Serialize(UserData);
-        File.WriteAllText(UserDataFile, jsonString);
+        UserDataInstancer.SaveUserData();
     }
 
     async void PopulateFeed()
@@ -164,9 +149,16 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void AddFeed(string name, string uri)
     {
-        PodcastFeed feed = new PodcastFeed(name, uri);
-        UserData.PodcastFeeds.Add(feed);
-        SaveUserData();
+        try
+        {
+            PodcastFeed feed = new PodcastFeed(name, uri);
+            UserDataInstancer.AddFeed(feed);
+            SaveUserData();
+        }
+        catch (ArgumentException)
+        {
+            
+        } 
     }
 
     public void RemoveFeed()

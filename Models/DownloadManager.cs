@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualBasic.FileIO;
 
 public class DownloadManager
 {
