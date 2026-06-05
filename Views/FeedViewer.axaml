@@ -49,20 +49,24 @@
         </StackPanel>
         <ScrollViewer DockPanel.Dock="Bottom">
             <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedList">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border CornerRadius="16" Padding="12,6" Margin="4">
-                            <StackPanel Orientation="Horizontal">
-                                <Expander Width="330" ToolTip.Tip="{Binding Item.Title.Text}">
-                                    <Expander.Header>
-                                        <TextBlock Text="{Binding Item.Title.Text}" MaxWidth="270" TextTrimming="CharacterEllipsis"/>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="16" Padding="12,6" Margin="4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Expander ToolTip.Tip="{Binding Item.Title.Text}" HorizontalAlignment="Stretch" Grid.Column="0">
+                                    <Expander.Header> 
+                                        <TextBlock Text="{Binding Item.Title.Text}" TextTrimming="CharacterEllipsis" />
                                     </Expander.Header>
                                     <StackPanel>
-                                            <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
-                                            <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
+                                        <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                        <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
                                     </StackPanel>
                                 </Expander>
-                                <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick">
+                                <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="1">
                                     <StackPanel>
                                     <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
                                         Width="20" Height="20" Margin="5"
@@ -70,11 +74,11 @@
                                     <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}"></ProgressBar>
                                     </StackPanel>
                                 </Button> 
-                            </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </DockPanel>
 </UserControl>
