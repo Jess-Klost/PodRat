@@ -10,7 +10,7 @@ public partial class FeedViewer : UserControl
 {
     private FeedViewerViewModel? viewModel => DataContext as FeedViewerViewModel;
 
-    public EventHandler<PodcastFeedItem> loadItem;
+    public event EventHandler<PodcastFeedItem> loadItem;
 
     public FeedViewer()
     {

@@ -9,9 +9,9 @@ public class AudioPlayer
         get => _libVLC;
         private set => _libVLC = value;
     }
-    public EventHandler<float> audioPositionChanged;
-    public EventHandler<long> audioLengthChanged;
-    public EventHandler playingStart;
+    public event EventHandler<float> audioPositionChanged;
+    public event EventHandler<long> audioLengthChanged;
+    public event EventHandler playingStart;
 
     private MediaPlayer _mediaPlayer;
     private MediaPlayer MediaPlayer
