@@ -47,4 +47,10 @@ public static class UserDataInstancer
         instance?.PodcastFeeds.Add(feed);
         UserDataChanged?.Invoke(null, EventArgs.Empty);
     }
+
+    public static void RemoveFeed(PodcastFeed feed)
+    {
+        instance?.PodcastFeeds.Remove(feed);
+        UserDataChanged?.Invoke(null, EventArgs.Empty);
+    }
 }

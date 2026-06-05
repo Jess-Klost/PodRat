@@ -71,7 +71,7 @@ public partial class FeedViewerViewModel : ViewModelBase
     {
         if (selectedFeed == null)
             return;
-        UserData.PodcastFeeds.Remove(selectedFeed);
+        UserDataInstancer.RemoveFeed(selectedFeed);
         downloadManager.DeleteFeed(selectedFeed);
         CurrentFeed = null;
         SaveUserData();
