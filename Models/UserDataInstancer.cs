@@ -1,10 +1,13 @@
+using System;
 using System.IO;
 using System.Text.Json;
 
-public sealed class UserDataInstancer
+public static class UserDataInstancer
 {
     private static UserData? instance = null;
     const string UserDataFile = "userdata.json";
+
+    public static event EventHandler UserDataChanged;
 
     public static UserData GetUserData()
     {
@@ -15,8 +18,6 @@ public sealed class UserDataInstancer
 
         return instance;
     }
-
-    private UserDataInstancer() {}
     
     public static void LoadUserData(string jsonFile = UserDataFile)
     {
@@ -25,6 +26,7 @@ public sealed class UserDataInstancer
             using StreamReader fileReader = new (jsonFile);
             string jsonString = fileReader.ReadToEnd();
             instance = JsonSerializer.Deserialize<UserData>(jsonString);
+            UserDataChanged?.Invoke(null, EventArgs.Empty);
         }
         catch (FileNotFoundException)
         {
@@ -43,5 +45,6 @@ public sealed class UserDataInstancer
     public static void AddFeed(PodcastFeed feed)
     {
         instance?.PodcastFeeds.Add(feed);
+        UserDataChanged?.Invoke(null, EventArgs.Empty);
     }
 }

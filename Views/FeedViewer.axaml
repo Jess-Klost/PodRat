@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:vm="using:RSSPod.ViewModels"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:RSSPod;assembly=RSSPod"
+            xmlns:views="clr-namespace:RSSPod.Views"
+            x:Class="RSSPod.Views.FeedViewer"
+            x:DataType="vm:FeedViewerViewModel">
+    <UserControl.DataContext>
+        <vm:FeedViewerViewModel />    
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <local:IsDownloadedToIconConverter x:Key="IsDownloadedConverter" />
+        <local:TimeFormatConverter x:Key="TimeFormatConverter" />
+        <local:HTMLConverter x:Key="HTMLConverter" />
+    </UserControl.Resources>
+
+    <DockPanel>
+        <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
+            <ComboBox ItemsSource="{Binding UserData.PodcastFeeds}" 
+                PlaceholderText="Podcast Feed"
+                SelectionChanged="FeedSelector_OnChange">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Content="Add Feed"  Name="AddFeedPopupButton" >
+                <Button.Flyout>
+                    <Flyout Closed="AddFeed_Closed">
+                        <StackPanel>
+                            <views:FeedAdder Name="FeedAdderFlyout" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>    
+            </Button>
+            <Button> 
+                <PathIcon Data="{StaticResource options_regular}" Width="15" 
+                        Height="15" HorizontalAlignment="Center"/>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuItem Header="Delete" Click="RemoveFeed_OnClick"></MenuItem>    
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+        <ScrollViewer DockPanel.Dock="Bottom">
+            <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedList">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="16" Padding="12,6" Margin="4">
+                            <StackPanel Orientation="Horizontal">
+                                <Expander Width="330" ToolTip.Tip="{Binding Item.Title.Text}">
+                                    <Expander.Header>
+                                        <TextBlock Text="{Binding Item.Title.Text}" MaxWidth="270" TextTrimming="CharacterEllipsis"/>
+                                    </Expander.Header>
+                                    <StackPanel>
+                                            <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                            <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
+                                    </StackPanel>
+                                </Expander>
+                                <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick">
+                                    <StackPanel>
+                                    <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
+                                        Width="20" Height="20" Margin="5"
+                                        HorizontalAlignment="Center"/>
+                                    <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}"></ProgressBar>
+                                    </StackPanel>
+                                </Button> 
+                            </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>
