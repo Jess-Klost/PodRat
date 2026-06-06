@@ -1,11 +1,37 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
 namespace RSSPod.ViewModels;
 
-public partial class FeedAdderViewModel : ViewModelBase
+public partial class FeedAdderViewModel : ObservableValidator
 {
-    public void AddFeed(string name, string uri)
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddFeedCommand))]
+    [Required]
+    [DirectoryName]
+    private string _name = "";
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddFeedCommand))]
+    [Required]
+    [Url]
+    private string _uri = "";
+
+    public event EventHandler? SuccessfulSubmit;
+
+    [RelayCommand()]
+    private void AddFeed()
     {
-        PodcastFeed feed = new PodcastFeed(name, uri);
+        ValidateAllProperties();
+
+        if (HasErrors)
+            return;
+
+        PodcastFeed feed = new PodcastFeed(Name, Uri);
         UserDataInstancer.AddFeed(feed);
         UserDataInstancer.SaveUserData();
+        SuccessfulSubmit?.Invoke(this, EventArgs.Empty);
     }
 }

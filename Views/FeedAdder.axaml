@@ -11,9 +11,9 @@
 
     <StackPanel>
         <Label Target="AddFeedNameBox" Content="Name" />
-        <TextBox Name="AddFeedNameBox" Width="150" Margin="5" />
+        <TextBox Name="AddFeedNameBox" Width="150" Margin="5" Text="{Binding Name}" />
         <Label Target="AddFeedRSSBox" Content="RSS Link" />
-        <TextBox Name="AddFeedRSSBox" Width="150" Margin="5"></TextBox>
-        <Button Click="AddFeed_OnClick" HorizontalAlignment="Right" Margin="5">Add</Button>
+        <TextBox Name="AddFeedRSSBox" Width="150" Margin="5" Text="{Binding Uri}" />
+        <Button Command="{Binding AddFeedCommand}" HorizontalAlignment="Right" Margin="5">Add</Button>
     </StackPanel>
 </UserControl>

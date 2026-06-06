@@ -14,18 +14,9 @@ public partial class FeedAdder : UserControl
     public FeedAdder()
     {
         InitializeComponent();
+        viewModel?.SuccessfulSubmit += (sender, e) => AddFeedSubmitted?.Invoke(sender, e);
     }
 
-    private void AddFeed_OnClick(object? sender, RoutedEventArgs e)
-    {
-        
-        if (AddFeedNameBox.Text != null && AddFeedRSSBox.Text != null)
-        {
-            viewModel?.AddFeed(AddFeedNameBox.Text, AddFeedRSSBox.Text);
-            AddFeedSubmitted?.Invoke(this, EventArgs.Empty);
-        }
-    }
-    
     public void Reset()
     {
         AddFeedNameBox.Clear();

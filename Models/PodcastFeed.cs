@@ -13,7 +13,7 @@ public class PodcastFeed
         Uri = uri;
     }
 
-    bool ValidName(string name)
+    public static bool ValidName(string name)
     {
         if (string.IsNullOrEmpty(name))
         {
