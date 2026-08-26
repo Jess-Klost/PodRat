@@ -67,7 +67,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border CornerRadius="16" Padding="12,6" Margin="4">
-                                <Grid ColumnSpacing="8">
+                                <Grid ColumnSpacing="8" RowDefinitions="*">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -76,8 +76,9 @@
                                         <Expander.Header> 
                                             <TextBlock Text="{Binding Item.Title.Text}" TextTrimming="CharacterEllipsis" />
                                         </Expander.Header>
-                                        <StackPanel>
+                                        <StackPanel Spacing="8">
                                             <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                            <TextBlock Text="{Binding Item.PublishDate}" Foreground="{DynamicResource BaseMediumHigh}"/>
                                             <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
                                         </StackPanel>
                                     </Expander>

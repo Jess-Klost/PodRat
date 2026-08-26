@@ -16,10 +16,12 @@
         <ResourceDictionary x:Key='Light'>
         <SolidColorBrush x:Key='BaseLow'>#ffcccccc</SolidColorBrush>
         <SolidColorBrush x:Key='BaseMediumLow'>#ff737373</SolidColorBrush>
+        <SolidColorBrush x:Key='BaseMediumHigh'>#ff5d5d5d</SolidColorBrush>
         </ResourceDictionary>
         <ResourceDictionary x:Key='Dark'>
         <SolidColorBrush x:Key='BaseLow'>#ff333333</SolidColorBrush>
         <SolidColorBrush x:Key='BaseMediumLow'>#ff676767</SolidColorBrush>
+        <SolidColorBrush x:Key='BaseMediumHigh'>#ffb4b4b4</SolidColorBrush>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>
