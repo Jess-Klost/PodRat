@@ -13,6 +13,8 @@ public partial class FeedViewerViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
+    public partial bool CurrentFeedLoading { get; set; } = false;
+    [ObservableProperty]
     public partial UserData UserData { get; set; }
 
     public event EventHandler<string, bool> UpdateDownloadStatus;
@@ -43,9 +45,11 @@ public partial class FeedViewerViewModel : ViewModelBase
     {
         if (selectedFeed == null)
             return;
+        CurrentFeedLoading = true;
         feedReader = new RSSFeedReader(selectedFeed.Uri);
         await feedReader.ReadRSSFeed();
         CurrentFeed = feedReader.GetFeedItems(selectedFeed);
+        CurrentFeedLoading = false;
     }
 
     public async Task DownloadItem(string id)
@@ -64,7 +68,7 @@ public partial class FeedViewerViewModel : ViewModelBase
     public void OnFeedChanged(PodcastFeed newFeed)
     {
         selectedFeed = newFeed;
-        PopulateFeed();
+        Task.Run(() => PopulateFeed());
     }
 
     public void RemoveFeed()

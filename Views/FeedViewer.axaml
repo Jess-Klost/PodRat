@@ -47,38 +47,50 @@
                 </Button.Flyout>
             </Button>
         </StackPanel>
-        <ScrollViewer DockPanel.Dock="Bottom">
-            <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedList">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border CornerRadius="16" Padding="12,6" Margin="4">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Expander ToolTip.Tip="{Binding Item.Title.Text}" HorizontalAlignment="Stretch" Grid.Column="0">
-                                    <Expander.Header> 
-                                        <TextBlock Text="{Binding Item.Title.Text}" TextTrimming="CharacterEllipsis" />
-                                    </Expander.Header>
-                                    <StackPanel>
-                                        <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
-                                        <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
-                                    </StackPanel>
-                                </Expander>
-                                <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="1">
-                                    <StackPanel>
-                                    <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
-                                        Width="20" Height="20" Margin="5"
-                                        HorizontalAlignment="Center"/>
-                                    <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}"></ProgressBar>
-                                    </StackPanel>
-                                </Button> 
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <Panel DockPanel.Dock="Bottom">
+            <TextBlock Text="No feed to display." Foreground="{DynamicResource BaseMediumLow}" 
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="!CurrentFeed.Count" />
+                        <Binding Path="!CurrentFeedLoading" />
+                    </MultiBinding>
+                </TextBlock.IsVisible>
+            </TextBlock>
+            <ProgressBar IsIndeterminate="True" Width="50" IsVisible="{Binding CurrentFeedLoading}" />
+            <ScrollViewer IsVisible="{Binding !CurrentFeedLoading}">
+                <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="16" Padding="12,6" Margin="4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Expander ToolTip.Tip="{Binding Item.Title.Text}" HorizontalAlignment="Stretch" Grid.Column="0">
+                                        <Expander.Header> 
+                                            <TextBlock Text="{Binding Item.Title.Text}" TextTrimming="CharacterEllipsis" />
+                                        </Expander.Header>
+                                        <StackPanel>
+                                            <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                            <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
+                                        </StackPanel>
+                                    </Expander>
+                                    <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="1">
+                                        <StackPanel>
+                                        <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
+                                            Width="20" Height="20" Margin="5"
+                                            HorizontalAlignment="Center"/>
+                                        <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}" Background="{DynamicResource BaseMediumLow}"></ProgressBar>
+                                        </StackPanel>
+                                    </Button> 
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Panel>
     </DockPanel>
 </UserControl>
