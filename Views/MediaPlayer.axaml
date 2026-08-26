@@ -32,8 +32,10 @@
 
     <StackPanel Orientation="Vertical" Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
         <Image Margin="20" MaxHeight="300" MaxWidth="300" asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
-        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" Margin="5"></TextBlock>
-        <TextBlock Text="{Binding Author}" HorizontalAlignment="Center" Margin="5"></TextBlock>
+        <TextBlock Text="{Binding Title}" ToolTip.Tip="{Binding Title}"
+            HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
+        <TextBlock Text="{Binding Author}" ToolTip.Tip="{Binding Author}"
+            HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
         <StackPanel Margin="10">
             <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
             <Panel>
