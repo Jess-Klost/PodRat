@@ -15,6 +15,7 @@
         <local:IsDownloadedToIconConverter x:Key="IsDownloadedConverter" />
         <local:TimeFormatConverter x:Key="TimeFormatConverter" />
         <local:HTMLConverter x:Key="HTMLConverter" />
+        <local:CollectionIsNullOrEmpty x:Key="CollectionIsNullOrEmpty" />
     </UserControl.Resources>
 
     <DockPanel>
@@ -48,16 +49,19 @@
             </Button>
         </StackPanel>
         <Panel DockPanel.Dock="Bottom">
-            <TextBlock Text="No feed to display." Foreground="{DynamicResource BaseMediumLow}" 
+            <TextBlock Text="No feed to display." Foreground="{DynamicResource BaseMediumLow}"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.IsVisible>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="!CurrentFeed.Count" />
+                        <Binding Path="CurrentFeed" Converter="{StaticResource CollectionIsNullOrEmpty}" />
                         <Binding Path="!CurrentFeedLoading" />
                     </MultiBinding>
                 </TextBlock.IsVisible>
             </TextBlock>
-            <ProgressBar IsIndeterminate="True" Width="50" IsVisible="{Binding CurrentFeedLoading}" />
+            <StackPanel IsVisible="{Binding CurrentFeedLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                <TextBlock Text="Loading Feed" Foreground="{DynamicResource BaseMediumLow}" TextAlignment="Center" />
+                <ProgressBar IsIndeterminate="True" Width="50" />
+            </StackPanel>
             <ScrollViewer IsVisible="{Binding !CurrentFeedLoading}">
                 <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedList">
                     <ItemsControl.ItemTemplate>
