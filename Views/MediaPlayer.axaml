@@ -30,13 +30,20 @@
         </Style>
     </UserControl.Styles>
 
-    <StackPanel Orientation="Vertical" Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
-        <Image Margin="20" MaxHeight="300" MaxWidth="300" asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
-        <TextBlock Text="{Binding Title}" ToolTip.Tip="{Binding Title}"
-            HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
-        <TextBlock Text="{Binding Author}" ToolTip.Tip="{Binding Author}"
-            HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
-        <StackPanel Margin="10">
+    <Grid Name="MediaControl" Grid.Column="1" VerticalAlignment="Bottom">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Image Margin="20" MaxHeight="300" MaxWidth="300" asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
+            <TextBlock Text="{Binding Title}" ToolTip.Tip="{Binding Title}"
+                HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
+            <TextBlock Text="{Binding Author}" ToolTip.Tip="{Binding Author}"
+                HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
+        </StackPanel>
+        <StackPanel Margin="10" Grid.Row="1">
             <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
             <Panel>
                 <TextBlock HorizontalAlignment="Left">
@@ -56,40 +63,40 @@
                 </TextBlock>
             </Panel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Click="Backward_OnClick">
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <PathIcon Data="{StaticResource rewind_regular}" Width="50" 
-                        Height="50" Margin="5" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
+            <Button Click="Backward_OnClick" Height="70">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource rewind_regular}" Width="45" 
+                        Height="45" />
+                    <TextBlock TextAlignment="Center" FontSize="10">-10</TextBlock>
                 </StackPanel>
             </Button>
-            <ToggleButton Name="PlayButton" Click="Play_OnClick">
-                <Panel>
-                    <PathIcon Classes="paused" Data="{StaticResource play_regular}" Width="50" 
-                        Height="50" Margin="5" 
-                        HorizontalAlignment="Center" />
-                    <PathIcon Classes="playing" Data="{StaticResource pause_regular}" Width="50" 
-                        Height="50" Margin="5" 
-                        HorizontalAlignment="Center" />
-                </Panel>
+            <ToggleButton Name="PlayButton" Click="Play_OnClick" Height="70">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <PathIcon Classes="paused" Data="{StaticResource play_regular}" Width="45" 
+                        Height="45" />
+                    <PathIcon Classes="playing" Data="{StaticResource pause_regular}" Width="45" 
+                        Height="45" />
+                </StackPanel>
             </ToggleButton>
-            <Button Click="Forward_OnClick">
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <PathIcon Data="{StaticResource fast_forward_regular}" Width="50" 
-                        Height="50" Margin="5" HorizontalAlignment="Center"/>
+            <Button Click="Forward_OnClick" Height="70">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource fast_forward_regular}" Width="45" 
+                        Height="45" />
+                    <TextBlock TextAlignment="Center" FontSize="10">+10</TextBlock>
                 </StackPanel>
             </Button>
-            <Button>
+            <Button Height="70">
                 <Button.Flyout>
                     <Flyout ShowMode="TransientWithDismissOnPointerMoveAway" Placement="Top">
-                        <Slider Orientation="Vertical" Value="50" Height="100" ValueChanged="Volume_OnValueChanged" Name="VolumeSlider"></Slider>    
+                        <Slider Orientation="Vertical" Value="50" Height="100" Width="45" ValueChanged="Volume_OnValueChanged" Name="VolumeSlider"></Slider>    
                     </Flyout>
                 </Button.Flyout>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <PathIcon Data="{StaticResource speaker_regular}" Width="50" 
-                        Height="50" Margin="5" HorizontalAlignment="Center"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <PathIcon Data="{StaticResource speaker_regular}" Width="45" 
+                        Height="45" />
                 </StackPanel>
             </Button>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </UserControl>
