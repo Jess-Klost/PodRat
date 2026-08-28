@@ -67,7 +67,7 @@ public partial class MediaPlayerViewModel : ViewModelBase
         LengthMS = audioPlayer.GetLengthTime();
         // Position has been set before first play, 
         // must set it after audio is played for the first time
-        if (Position != 0) 
+        if (Position != 0)
         {
             audioPlayer.SetPosition((float)Position);
         }

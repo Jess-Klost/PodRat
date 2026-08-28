@@ -103,13 +103,12 @@
                                         Grid.RowSpan="2"
                                         asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
                                     <TextBlock Text="{Binding Item.Title.Text}" 
-                                        TextTrimming="CharacterEllipsis"
+                                        TextTrimming="WordEllipsis"
                                         ToolTip.Tip="{Binding Item.Title.Text}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         TextWrapping="WrapWithOverflow"
                                         MaxHeight="50"
-                                        TextAlignment="Center"
                                         Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" />
                                     <TextBlock Text="{Binding Item.PublishDate, Converter={StaticResource ShortDate}}"
                                         Foreground="{DynamicResource BaseMediumHigh}"
@@ -134,7 +133,7 @@
                                         </StackPanel>
                                     </Button> 
                                     <FlyoutBase.AttachedFlyout>
-                                        <Flyout FlyoutPresenterClasses="large">
+                                        <Flyout FlyoutPresenterClasses="large" ShowMode="TransientWithDismissOnPointerMoveAway">
                                             <StackPanel Spacing="8" MaxWidth="300">
                                                 <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
                                                 <TextBlock Foreground="{DynamicResource BaseMediumHigh}">

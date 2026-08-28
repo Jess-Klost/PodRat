@@ -1,3 +1,6 @@
+using System;
+using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -28,8 +31,19 @@ public partial class MediaPlayer : UserControl
     public void LoadItem(PodcastFeedItem item)
     {
         viewModel?.LoadItem(item);
-        playing = false;
-        PlayButton.IsChecked = false;
+        // TODO: Add user setting for auto play on load
+        if (true)
+        {
+            // Auto play on item load
+            viewModel?.PlayAudio();
+            playing = true;
+            PlayButton.SetValue(ToggleButton.IsCheckedProperty, true);
+        }
+        else 
+        {
+            playing = false;
+            PlayButton.IsChecked = false;
+        }
     }
 
     private void Play_OnClick(object? sender, RoutedEventArgs e)
