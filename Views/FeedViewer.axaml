@@ -21,6 +21,7 @@
         <local:StringConcatConverter x:Key="StringConcat" />
         <local:DateTimeShortDateConverter x:Key="ShortDate" />
         <local:DateTimeFullDateConverter x:Key="FullDate" />
+        <local:BytesToMegabytesConverter x:Key="Megabytes" />
     </UserControl.Resources>
 
     <UserControl.Styles>
@@ -133,6 +134,13 @@
                                         <Flyout FlyoutPresenterClasses="large">
                                             <StackPanel Spacing="8" MaxWidth="300">
                                                 <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                                <TextBlock Foreground="{DynamicResource BaseMediumHigh}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} MB">
+                                                            <Binding Path="FileSize" Converter="{StaticResource Megabytes}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
                                                 <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
                                             </StackPanel>
                                         </Flyout>

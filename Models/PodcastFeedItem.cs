@@ -8,6 +8,7 @@ public class PodcastFeedItem
     public Task<bool> IsDownloaded => GetIsDownloaded();
     public string Duration { get => GetDuration(); }
     public string ThumbnailLink { get => GetThumbnailLink(); }
+    public long FileSize { get => GetFileSize(); }
 
     private async Task<bool> GetIsDownloaded()
     {
@@ -29,5 +30,17 @@ public class PodcastFeedItem
     {
         RSSFeedReader.GetDurationFromItem(Item, out string duration);
         return duration;
+    }
+
+    public long GetFileSize()
+    {
+        foreach(SyndicationLink link in Item.Links)
+        {
+            if (link.MediaType == "audio/mpeg")
+            {
+                return link.Length;
+            }
+        }
+        return 0;
     }
 }
