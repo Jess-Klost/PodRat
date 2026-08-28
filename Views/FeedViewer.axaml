@@ -107,6 +107,9 @@
                                         ToolTip.Tip="{Binding Item.Title.Text}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
+                                        TextWrapping="WrapWithOverflow"
+                                        MaxHeight="50"
+                                        TextAlignment="Center"
                                         Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" />
                                     <TextBlock Text="{Binding Item.PublishDate, Converter={StaticResource ShortDate}}"
                                         Foreground="{DynamicResource BaseMediumHigh}"
