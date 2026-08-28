@@ -5,6 +5,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:local="clr-namespace:RSSPod;assembly=RSSPod"
             xmlns:views="clr-namespace:RSSPod.Views"
+            xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
             x:Class="RSSPod.Views.FeedViewer"
             x:DataType="vm:FeedViewerViewModel">
     <UserControl.DataContext>
@@ -88,33 +89,39 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
+                                    <Image HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Height="50" Width="50"
+                                        Grid.RowSpan="2"
+                                        asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
                                     <TextBlock Text="{Binding Item.Title.Text}" 
                                         TextTrimming="CharacterEllipsis"
                                         ToolTip.Tip="{Binding Item.Title.Text}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Grid.Row="0" Grid.ColumnSpan="2" />
+                                        Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" />
                                     <TextBlock Text="{Binding Item.PublishDate, Converter={StaticResource ShortDate}}"
                                         Foreground="{DynamicResource BaseMediumHigh}"
                                         TextTrimming="CharacterEllipsis"
                                         ToolTip.Tip="{Binding Item.PublishDate, Converter={StaticResource FullDate}}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Grid.Row="1"/>
+                                        Grid.Row="1" Grid.Column="1" />
                                     <TextBlock Text="{Binding Duration}"
                                         Foreground="{DynamicResource BaseMediumHigh}"
                                         TextTrimming="CharacterEllipsis"
                                         ToolTip.Tip="{Binding Duration}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Grid.Row="1" Grid.Column="1"/>
-                                    <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="2" Grid.RowSpan="2">
+                                        Grid.Row="1" Grid.Column="2"/>
+                                    <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="3" Grid.RowSpan="2">
                                         <StackPanel>
                                         <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
                                             Width="20" Height="20" Margin="5"

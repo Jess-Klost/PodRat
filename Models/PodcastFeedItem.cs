@@ -7,6 +7,7 @@ public class PodcastFeedItem
     public required SyndicationItem Item { get; set; }
     public Task<bool> IsDownloaded => GetIsDownloaded();
     public string Duration { get => GetDuration(); }
+    public string ThumbnailLink { get => GetThumbnailLink(); }
 
     private async Task<bool> GetIsDownloaded()
     {
