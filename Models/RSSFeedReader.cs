@@ -90,4 +90,22 @@ public class RSSFeedReader
         imageLink = "";
         return false;
     }
+
+    public static bool GetDurationFromItem(SyndicationItem item, out string durationString)
+    {
+        foreach (SyndicationElementExtension extension in item.ElementExtensions)
+        {
+            XElement element = extension.GetObject<XElement>();
+            if (element != null && element.Value != null)
+            {
+                if (element.Name.LocalName == "duration")
+                {
+                    durationString = TimeSpan.FromSeconds(Convert.ToDouble(element.Value)).ToString(@"hh\:mm\:ss");
+                    return true;
+                }
+            }
+        }
+        durationString = "";
+        return false;
+    }
 }

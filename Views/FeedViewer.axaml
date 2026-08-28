@@ -16,7 +16,18 @@
         <local:TimeFormatConverter x:Key="TimeFormatConverter" />
         <local:HTMLConverter x:Key="HTMLConverter" />
         <local:CollectionIsNullOrEmpty x:Key="CollectionIsNullOrEmpty" />
+        <local:CollectionHasElements x:Key="CollectionHasElements" />
+        <local:StringConcatConverter x:Key="StringConcat" />
+        <local:DateTimeShortDateConverter x:Key="ShortDate" />
+        <local:DateTimeFullDateConverter x:Key="FullDate" />
     </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="FlyoutPresenter.large">
+           <Setter Property="MinWidth" Value="400" />
+           <Setter Property="MaxHeight" Value="400" />
+       </Style>
+    </UserControl.Styles>
 
     <DockPanel>
         <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
@@ -62,27 +73,48 @@
                 <TextBlock Text="Loading Feed" Foreground="{DynamicResource BaseMediumLow}" TextAlignment="Center" />
                 <ProgressBar IsIndeterminate="True" Width="50" />
             </StackPanel>
-            <ScrollViewer IsVisible="{Binding !CurrentFeedLoading}">
-                <ItemsControl ItemsSource="{Binding CurrentFeed}" Name="FeedList">
-                    <ItemsControl.ItemTemplate>
+            <ScrollViewer>
+                <ScrollViewer.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="CurrentFeed" Converter="{StaticResource CollectionHasElements}" />
+                        <Binding Path="!CurrentFeedLoading" />
+                    </MultiBinding>
+                </ScrollViewer.IsVisible>
+                <ListBox ItemsSource="{Binding CurrentFeed}" Name="FeedList" SelectionChanged="FeedList_SelectionChanged">
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border CornerRadius="16" Padding="12,6" Margin="4">
-                                <Grid ColumnSpacing="8" RowDefinitions="*">
+                                <Grid ColumnSpacing="8" Name="{Binding Item.Id, Converter={StaticResource StringConcat}, ConverterParameter=ListItem}">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <Expander ToolTip.Tip="{Binding Item.Title.Text}" HorizontalAlignment="Stretch" Grid.Column="0">
-                                        <Expander.Header> 
-                                            <TextBlock Text="{Binding Item.Title.Text}" TextTrimming="CharacterEllipsis" />
-                                        </Expander.Header>
-                                        <StackPanel Spacing="8">
-                                            <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
-                                            <TextBlock Text="{Binding Item.PublishDate}" Foreground="{DynamicResource BaseMediumHigh}"/>
-                                            <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
-                                        </StackPanel>
-                                    </Expander>
-                                    <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{Binding Item.Title.Text}" 
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip.Tip="{Binding Item.Title.Text}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Grid.Row="0" Grid.ColumnSpan="2" />
+                                    <TextBlock Text="{Binding Item.PublishDate, Converter={StaticResource ShortDate}}"
+                                        Foreground="{DynamicResource BaseMediumHigh}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip.Tip="{Binding Item.PublishDate, Converter={StaticResource FullDate}}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Grid.Row="1"/>
+                                    <TextBlock Text="{Binding Duration}"
+                                        Foreground="{DynamicResource BaseMediumHigh}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip.Tip="{Binding Duration}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Grid.Row="1" Grid.Column="1"/>
+                                    <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="2" Grid.RowSpan="2">
                                         <StackPanel>
                                         <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
                                             Width="20" Height="20" Margin="5"
@@ -90,11 +122,19 @@
                                         <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}" Background="{DynamicResource BaseMediumLow}"></ProgressBar>
                                         </StackPanel>
                                     </Button> 
-                                </Grid>
+                                    <FlyoutBase.AttachedFlyout>
+                                        <Flyout FlyoutPresenterClasses="large">
+                                            <StackPanel Spacing="8" MaxWidth="300">
+                                                <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                                <SelectableTextBlock Text="{Binding Item.Summary.Text, Converter={StaticResource HTMLConverter}}" TextWrapping="WrapWithOverflow" />
+                                            </StackPanel>
+                                        </Flyout>
+                                    </FlyoutBase.AttachedFlyout>
+                                </Grid> 
                             </Border>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </ScrollViewer>
         </Panel>
     </DockPanel>

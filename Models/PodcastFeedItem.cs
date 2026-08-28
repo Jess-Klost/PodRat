@@ -6,6 +6,7 @@ public class PodcastFeedItem
     public required PodcastFeed Feed { get; set; }
     public required SyndicationItem Item { get; set; }
     public Task<bool> IsDownloaded => GetIsDownloaded();
+    public string Duration { get => GetDuration(); }
 
     private async Task<bool> GetIsDownloaded()
     {
@@ -21,5 +22,11 @@ public class PodcastFeedItem
     {
         RSSFeedReader.GetImageFromItem(Item, out string imageResult);
         return imageResult;
+    }
+
+    public string GetDuration()
+    {
+        RSSFeedReader.GetDurationFromItem(Item, out string duration);
+        return duration;
     }
 }

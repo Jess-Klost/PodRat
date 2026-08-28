@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using RSSPod.ViewModels;
@@ -74,6 +76,24 @@ public partial class FeedViewer : UserControl
         if (feed == null)
             return;
         viewModel?.OnFeedChanged(feed);
+    }
+
+    private void FeedList_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ListBox listBox) 
+        {
+            foreach(object item in e.AddedItems)
+            {
+                if (item is PodcastFeedItem podcastFeedItem)
+                {
+                    if (FindNamedChild(podcastFeedItem.Item.Id + "ListItem", listBox) is Control listItem)
+                    {
+                        FlyoutBase.ShowAttachedFlyout(listItem);
+                    } 
+                }
+            }
+            listBox.UnselectAll();
+        }
     }
 
     private void OnFeedAdderSubmit(object? sender, EventArgs e)
