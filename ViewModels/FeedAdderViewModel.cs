@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RSSPod.Models;
 
 namespace RSSPod.ViewModels;
 

@@ -6,6 +6,8 @@ using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
 
+namespace RSSPod.Models;
+
 public class DownloadManager
 {
     public static string downloadDirectory { get; set; } = "AudioDownloads";

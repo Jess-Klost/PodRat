@@ -1,5 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using RSSPod.Models;
 
 namespace RSSPod.ViewModels;
 

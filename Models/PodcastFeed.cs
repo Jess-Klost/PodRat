@@ -1,5 +1,7 @@
 using System;
 
+namespace RSSPod.Models;
+
 public class PodcastFeed
 {
     public string Name { get; set; }

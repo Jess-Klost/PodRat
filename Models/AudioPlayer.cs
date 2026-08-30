@@ -1,6 +1,8 @@
 using System;
 using LibVLCSharp.Shared;
 
+namespace RSSPod.Models;
+
 public class AudioPlayer
 {
     private LibVLC _libVLC;

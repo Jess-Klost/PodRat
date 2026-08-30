@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Text.Json;
 
+namespace RSSPod.Models;
+
 public static class UserDataInstancer
 {
     private static UserData? instance = null;

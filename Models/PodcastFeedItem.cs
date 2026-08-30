@@ -1,6 +1,8 @@
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
+namespace RSSPod.Models;
+
 public class PodcastFeedItem
 {
     public required PodcastFeed Feed { get; set; }
