@@ -21,6 +21,8 @@ public partial class MediaPlayerViewModel : ViewModelBase
 
     AudioPlayer audioPlayer;
 
+    PodcastFeedItem? currentLoadedItem = null;
+
     public MediaPlayerViewModel()
     {
         audioPlayer = new AudioPlayer();
@@ -86,11 +88,17 @@ public partial class MediaPlayerViewModel : ViewModelBase
 
     public void LoadItem(PodcastFeedItem item)
     {
+        if (currentLoadedItem != null) 
+        {
+            ListenDataManager.UpdateListenData(currentLoadedItem.Feed, item.Item.Id, audioPlayer.GetPosition());
+        }
+
         audioPlayer.LoadAudio(item.GetAudioPath());
         Title = item.Item.Title.Text;
         Author = item.Feed.Name;
         ThumbnailLink = item.GetThumbnailLink();
         Position = 0;
         LengthMS = 0;
+        currentLoadedItem = item;
     }
 }

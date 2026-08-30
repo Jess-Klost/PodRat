@@ -145,4 +145,9 @@ public class DownloadManager
             throw new InvalidOperationException("Download Manager: no AudioLink found on item, therefore download is impossible");
         return DownloadedItemPath(feed, item, audioLink);
     }
+
+    public static string FeedDownloadPath(PodcastFeed feed)
+    {
+        return Path.GetFullPath(Path.Combine(downloadDirectory, feed.Name));
+    }
 }
