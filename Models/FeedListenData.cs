@@ -1,15 +1,15 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RSSPod.Models;
 
 public class FeedListenData
 {
-    PodcastFeed feed;
+    [JsonInclude]
     Dictionary<string, EpisodeListenData> episodeListenData;
 
-    public FeedListenData(PodcastFeed feed)
+    public FeedListenData()
     {
-        this.feed = feed;
         episodeListenData = new Dictionary<string, EpisodeListenData>();
     }
 

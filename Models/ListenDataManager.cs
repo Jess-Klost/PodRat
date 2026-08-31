@@ -32,7 +32,7 @@ public sealed class ListenDataManager
 
     public static void SaveListenData(PodcastFeed feed)
     {
-        if (instance == null)
+        if (instance == null || !instance.feedListenData.ContainsKey(feed))
             return;
         string jsonString = JsonSerializer.Serialize(instance.feedListenData[feed]);
         File.WriteAllText(GetFeedListenDataPath(feed), jsonString);
@@ -74,7 +74,7 @@ public sealed class ListenDataManager
             instance.feedListenData[feed].UpdateListenData(episodeId, position);
         else
         {
-            FeedListenData feedListenData = new FeedListenData(feed);
+            FeedListenData feedListenData = new FeedListenData();
             feedListenData.UpdateListenData(episodeId, position);
             instance.feedListenData.Add(feed, feedListenData);
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using RSSPod.Models;
 
@@ -6,6 +7,9 @@ namespace RSSPod.ViewModels;
 
 public partial class MediaPlayerViewModel : ViewModelBase
 {
+    // Keep track of instances, so a call can be made on exit
+    public static List<MediaPlayerViewModel> Instances { get; } = new List<MediaPlayerViewModel>(); 
+
     [ObservableProperty]
     public partial double Position { get; set; } = 0;
     [ObservableProperty]
@@ -29,6 +33,8 @@ public partial class MediaPlayerViewModel : ViewModelBase
         audioPlayer.audioPositionChanged += AudioPositionChanged;
         audioPlayer.playingStart += PlayingStart;
         audioPlayer.SetVolume((int)Volume);
+
+        Instances.Add(this);
     }
 
     public void PlayAudio()
@@ -101,5 +107,14 @@ public partial class MediaPlayerViewModel : ViewModelBase
         if (Position == 1) Position = 0; // if episode is played after completed, go back to start 
         LengthMS = 0;
         currentLoadedItem = item;
+    }
+
+    public void OnExit()
+    {
+        // Track listen data for currently loaded item
+        if (currentLoadedItem != null) 
+        {
+            ListenDataManager.UpdateListenData(currentLoadedItem.Feed, currentLoadedItem.Item.Id, audioPlayer.GetPosition());
+        }
     }
 }

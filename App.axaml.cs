@@ -1,6 +1,8 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using RSSPod.Models;
 using RSSPod.ViewModels;
 using RSSPod.Views;
 
@@ -21,8 +23,21 @@ public partial class App : Application
             {
                 DataContext = new MainWindowViewModel(),
             };
+            desktop.Exit += OnExit;
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        // Call OnExit for all media player instances, so listen data is saved 
+        // for any currently loaded episode 
+        foreach(MediaPlayerViewModel mediaPlayer in MediaPlayerViewModel.Instances)
+            mediaPlayer.OnExit();
+        
+        // Save listen data for all feeds to file on exit 
+        foreach (PodcastFeed feed in UserDataInstancer.GetUserData().PodcastFeeds)
+            ListenDataManager.SaveListenData(feed);
     }
 }
