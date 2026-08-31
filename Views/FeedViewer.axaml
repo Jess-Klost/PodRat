@@ -129,7 +129,15 @@
                                         <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
                                             Width="20" Height="20" Margin="5"
                                             HorizontalAlignment="Center"/>
-                                        <ProgressBar MinWidth="20" IsVisible="{Binding !IsDownloaded^}" Background="{DynamicResource BaseMediumLow}"></ProgressBar>
+                                        <ProgressBar MinWidth="20"
+                                            IsVisible="{Binding !IsDownloaded^}"
+                                            Background="{DynamicResource BaseMediumLow}" />
+                                        <ProgressBar MinWidth="20" 
+                                            IsVisible="{Binding IsDownloaded^}"
+                                            Background="{DynamicResource BaseMediumLow}"
+                                            Value="{Binding ListenDataPosition}"
+                                            Minimum="0"
+                                            Maximum="1" />
                                         </StackPanel>
                                     </Button> 
                                     <FlyoutBase.AttachedFlyout>

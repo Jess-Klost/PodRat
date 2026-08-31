@@ -11,6 +11,7 @@ public class PodcastFeedItem
     public string Duration { get => GetDuration(); }
     public string ThumbnailLink { get => GetThumbnailLink(); }
     public long FileSize { get => GetFileSize(); }
+    public float ListenDataPosition { get => ListenDataManager.GetListenDataPosition(Feed, Item.Id); }
 
     private async Task<bool> GetIsDownloaded()
     {
