@@ -90,14 +90,15 @@ public partial class MediaPlayerViewModel : ViewModelBase
     {
         if (currentLoadedItem != null) 
         {
-            ListenDataManager.UpdateListenData(currentLoadedItem.Feed, item.Item.Id, audioPlayer.GetPosition());
+            ListenDataManager.UpdateListenData(currentLoadedItem.Feed, currentLoadedItem.Item.Id, audioPlayer.GetPosition());
         }
 
         audioPlayer.LoadAudio(item.GetAudioPath());
         Title = item.Item.Title.Text;
         Author = item.Feed.Name;
         ThumbnailLink = item.GetThumbnailLink();
-        Position = 0;
+        Position = ListenDataManager.GetListenDataPosition(item.Feed, item.Item.Id);
+        if (Position == 1) Position = 0; // if episode is played after completed, go back to start 
         LengthMS = 0;
         currentLoadedItem = item;
     }

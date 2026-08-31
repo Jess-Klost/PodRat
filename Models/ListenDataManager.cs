@@ -47,6 +47,15 @@ public sealed class ListenDataManager
         return null;
     }
 
+    public static float GetListenDataPosition(PodcastFeed feed, string episodeId)
+    {
+        if (instance == null)
+            return 0;
+        if (instance.feedListenData.ContainsKey(feed))
+            return instance.feedListenData[feed].GetEpisodeListenData(episodeId);
+        return 0;
+    }
+
     public static void UpdateListenData(PodcastFeed feed, FeedListenData newListenData)
     {
         if (instance == null)
