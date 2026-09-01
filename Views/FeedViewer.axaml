@@ -22,6 +22,7 @@
         <local:DateTimeShortDateConverter x:Key="ShortDate" />
         <local:DateTimeFullDateConverter x:Key="FullDate" />
         <local:BytesToMegabytesConverter x:Key="Megabytes" />
+        <local:SubtractIfStringEmptyConverter x:Key="SubtractIfEmpty" />
     </UserControl.Resources>
 
     <UserControl.Styles>
@@ -111,6 +112,7 @@
                                         VerticalAlignment="Center"
                                         Height="50" Width="50"
                                         Grid.RowSpan="2"
+                                        IsVisible="{Binding ThumbnailLink, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                                         asyncImageLoader:ImageLoader.Source="{Binding ThumbnailLink}"/>
                                     <TextBlock Text="{Binding Item.Title.Text}" 
                                         TextTrimming="WordEllipsis"
@@ -119,14 +121,21 @@
                                         VerticalAlignment="Center"
                                         TextWrapping="WrapWithOverflow"
                                         MaxHeight="50"
-                                        Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" />
+                                        Grid.Row="0" 
+                                        Grid.Column="{Binding ThumbnailLink,
+                                            Converter={StaticResource SubtractIfEmpty}, 
+                                            ConverterParameter=1}" 
+                                        Grid.ColumnSpan="2" />
                                     <TextBlock Text="{Binding Item.PublishDate, Converter={StaticResource ShortDate}}"
                                         Foreground="{DynamicResource BaseMediumHigh}"
                                         TextTrimming="CharacterEllipsis"
                                         ToolTip.Tip="{Binding Item.PublishDate, Converter={StaticResource FullDate}}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Grid.Row="1" Grid.Column="1" />
+                                        Grid.Row="1" 
+                                        Grid.Column="{Binding ThumbnailLink,
+                                            Converter={StaticResource SubtractIfEmpty}, 
+                                            ConverterParameter=1}" />
                                     <TextBlock Text="{Binding Duration}"
                                         Foreground="{DynamicResource BaseMediumHigh}"
                                         TextTrimming="CharacterEllipsis"
