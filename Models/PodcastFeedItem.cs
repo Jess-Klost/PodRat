@@ -1,3 +1,4 @@
+using System;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
@@ -12,15 +13,25 @@ public class PodcastFeedItem
     public string ThumbnailLink { get => GetThumbnailLink(); }
     public long FileSize { get => GetFileSize(); }
     public float ListenDataPosition { get => ListenDataManager.GetListenDataPosition(Feed, Item.Id); }
+    public bool HasAudio { get => GetAudioPath(out _); }
 
     private async Task<bool> GetIsDownloaded()
     {
         return DownloadManager.IsDownloaded(Feed, Item);    
     }
 
-    public string GetAudioPath()
+    public bool GetAudioPath(out string path)
     {
-        return DownloadManager.DownloadedItemPath(Feed, Item);
+        try 
+        {
+            path = DownloadManager.DownloadedItemPath(Feed, Item);
+            return true;
+        }
+        catch (InvalidOperationException)
+        {
+            path = "";
+            return false;
+        }
     }
 
     public string GetThumbnailLink()

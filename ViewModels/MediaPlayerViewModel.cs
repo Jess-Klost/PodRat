@@ -98,8 +98,10 @@ public partial class MediaPlayerViewModel : ViewModelBase
         {
             ListenDataManager.UpdateListenData(currentLoadedItem.Feed, currentLoadedItem.Item.Id, audioPlayer.GetPosition());
         }
-
-        audioPlayer.LoadAudio(item.GetAudioPath());
+        bool hasAudio = item.GetAudioPath(out string path);
+        if (!hasAudio) // Audio does not exist for this item, cannot play 
+            return;
+        audioPlayer.LoadAudio(path);
         Title = item.Item.Title.Text;
         Author = item.Feed.Name;
         ThumbnailLink = item.GetThumbnailLink();

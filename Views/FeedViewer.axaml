@@ -68,12 +68,22 @@
                     <MultiBinding Converter="{x:Static BoolConverters.And}">
                         <Binding Path="CurrentFeed" Converter="{StaticResource CollectionIsNullOrEmpty}" />
                         <Binding Path="!CurrentFeedLoading" />
+                        <Binding Path="CurrentFeedValid" />
                     </MultiBinding>
                 </TextBlock.IsVisible>
             </TextBlock>
             <StackPanel IsVisible="{Binding CurrentFeedLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                 <TextBlock Text="Loading Feed" Foreground="{DynamicResource BaseMediumLow}" TextAlignment="Center" />
                 <ProgressBar IsIndeterminate="True" Width="50" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                <StackPanel.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="!CurrentFeedLoading" />
+                            <Binding Path="!CurrentFeedValid" />
+                    </MultiBinding>
+                </StackPanel.IsVisible>
+                <TextBlock Foreground="{DynamicResource BaseMediumLow}">Could not find a RSS feed at this URL.</TextBlock>
             </StackPanel>
             <ScrollViewer>
                 <ScrollViewer.IsVisible>
@@ -124,7 +134,11 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Grid.Row="1" Grid.Column="2"/>
-                                    <Button VerticalAlignment="Top" Name="{Binding Item.Id}" Click="InteractItem_OnClick" Grid.Column="3" Grid.RowSpan="2">
+                                    <Button VerticalAlignment="Top" 
+                                        Name="{Binding Item.Id}"
+                                        Click="InteractItem_OnClick"
+                                        Grid.Column="3" Grid.RowSpan="2"
+                                        IsVisible="{Binding HasAudio}">
                                         <StackPanel>
                                         <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
                                             Width="20" Height="20" Margin="5"
@@ -144,7 +158,8 @@
                                         <Flyout FlyoutPresenterClasses="large" ShowMode="TransientWithDismissOnPointerMoveAway">
                                             <StackPanel Spacing="8" MaxWidth="300">
                                                 <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
-                                                <TextBlock Foreground="{DynamicResource BaseMediumHigh}">
+                                                <TextBlock Foreground="{DynamicResource BaseMediumHigh}"
+                                                    IsVisible="{Binding HasAudio}">
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0} MB">
                                                             <Binding Path="FileSize" Converter="{StaticResource Megabytes}" />

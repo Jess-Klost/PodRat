@@ -16,10 +16,14 @@ public partial class FeedViewerViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool CurrentFeedLoading { get; set; } = false;
     [ObservableProperty]
+    // Start valid, so no feed selected is properly displayed
+    public partial bool CurrentFeedValid { get; set; } = true;
+    [ObservableProperty]
     public partial UserData UserData { get; set; }
 
     public event EventHandler<string, bool> UpdateDownloadStatus;
     public event EventHandler<string, float> ProgressChanged;
+
 
     RSSFeedReader feedReader;
     DownloadManager downloadManager = new DownloadManager(DownloadDirectory);
@@ -48,8 +52,11 @@ public partial class FeedViewerViewModel : ViewModelBase
             return;
         CurrentFeedLoading = true;
         feedReader = new RSSFeedReader(selectedFeed.Uri);
-        await feedReader.ReadRSSFeed();
-        CurrentFeed = feedReader.GetFeedItems(selectedFeed);
+        CurrentFeedValid = await feedReader.ReadRSSFeed();
+        if (CurrentFeedValid)
+            CurrentFeed = feedReader.GetFeedItems(selectedFeed);
+        else
+            CurrentFeed = null;
         CurrentFeedLoading = false;
     }
 

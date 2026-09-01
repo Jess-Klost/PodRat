@@ -10,14 +10,15 @@ public partial class FeedAdderViewModel : ObservableValidator
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddFeedCommand))]
-    [Required]
+    [Required(ErrorMessage="{0} is required.")]
     [DirectoryName]
     private string _name = "";
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddFeedCommand))]
-    [Required]
-    [Url]
+    [Display(Name="RSS Link")]
+    [Required(ErrorMessage="{0} is required.")]
+    [Url(ErrorMessage="{0} must be a valid URL.")]
     private string _uri = "";
 
     public event EventHandler? SuccessfulSubmit;

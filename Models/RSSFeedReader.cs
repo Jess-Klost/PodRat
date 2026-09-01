@@ -34,6 +34,18 @@ public class RSSFeedReader
             {
                 return false;
             }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
+            catch (OperationCanceledException)
+            {
+                return false;
+            }
+            catch (UriFormatException)
+            {
+                return false;
+            }
             using (XmlReader reader = XmlReader.Create(stream))
             {
                 feed = SyndicationFeed.Load(reader);   

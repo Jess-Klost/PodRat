@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -18,13 +19,13 @@ public sealed class ListenDataManager
             return;
         try
         {
-            using StreamReader fileReader = new (GetFeedListenDataPath(feed));
+            using StreamReader fileReader = new StreamReader(GetFeedListenDataPath(feed));
             string jsonString = fileReader.ReadToEnd();
             FeedListenData? listenData = JsonSerializer.Deserialize<FeedListenData>(jsonString);
             if (listenData != null)
                 instance.feedListenData.Add(feed, listenData);
         }
-        catch (FileNotFoundException)
+        catch (Exception)
         {
             return;
         }
