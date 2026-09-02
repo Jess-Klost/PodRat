@@ -4,6 +4,7 @@ using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using RSSPod.Models;
+using RSSPod.Views;
 
 namespace RSSPod.ViewModels;
 
@@ -22,6 +23,8 @@ public partial class FeedViewerViewModel : ViewModelBase
     public partial bool CurrentFeedValid { get; set; } = true;
     [ObservableProperty]
     public partial UserData UserData { get; set; }
+    [ObservableProperty]
+    public partial bool EditFeedPopupVisible { get; set; } = false;
 
     public event EventHandler<string, bool> UpdateDownloadStatus;
     public event EventHandler<string, float> ProgressChanged;

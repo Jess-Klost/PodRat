@@ -34,5 +34,9 @@ public partial class FeedEditorViewModel : ObservableValidator
         UserDataInstancer.RenameFeed(FeedToEdit, Name);
         UserDataInstancer.SaveUserData();
         SuccessfulSubmit?.Invoke(this, EventArgs.Empty);
+
+        // Reset properties
+        FeedToEdit = null;
+        Name = "";
     }
 }

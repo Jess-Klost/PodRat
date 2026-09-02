@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using RSSPod.Models;
@@ -20,6 +21,8 @@ public partial class FeedViewer : UserControl
         InitializeComponent();
         DataContextChanged += (sender, e) => InitializeDatacontext();
         FeedAdderFlyout.AddFeedSubmitted += OnFeedAdderSubmit;
+        FeedEditorControl.EditFeedSubmitted += OnFeedEditorSubmit;
+        PopupBackground.PointerPressed += OnPopupBackgroundPointerPressed;
         InitializeDatacontext();
     }
 
@@ -69,8 +72,22 @@ public partial class FeedViewer : UserControl
 
     private void EditFeed_OnClick(object? sender, RoutedEventArgs e)
     {
+        if (viewModel?.SelectedFeed == null)
+            return;
         FeedEditorControl.SetFeedToEdit(viewModel?.SelectedFeed);
-        EditFeedPopup.IsOpen = true;
+        viewModel?.EditFeedPopupVisible = true;
+    }
+
+    private void OnFeedEditorSubmit(object? sender, EventArgs e)
+    {
+        viewModel?.EditFeedPopupVisible = false;
+    }
+
+    private void OnPopupBackgroundPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        // Light dismiss does not work with current Avalonia version, so instead
+        // dismiss when user presses grayed out background
+        viewModel?.EditFeedPopupVisible = false;
     }
 
     private void FeedSelector_OnChange(object? sender, SelectionChangedEventArgs e)
@@ -114,7 +131,7 @@ public partial class FeedViewer : UserControl
         AddFeedPopupButton?.Flyout?.Hide();
     }
 
-    private void AddFeed_Closed(object? sender, System.EventArgs e)
+    private void AddFeed_Closed(object? sender, EventArgs e)
     {
         FeedAdderFlyout.Reset();
     }

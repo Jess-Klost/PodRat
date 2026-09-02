@@ -22,5 +22,4 @@ public partial class FeedEditor : UserControl
     {
         viewModel?.FeedToEdit = feed;
     }
-
 }
