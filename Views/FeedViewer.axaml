@@ -192,9 +192,7 @@
         </DockPanel>
         <Border Name="PopupBackground" IsVisible="{Binding EditFeedPopupVisible}" Background="#40000000">
             <Popup IsOpen="{Binding EditFeedPopupVisible}"
-                    Placement="Center"
-                    Width="200" Height="200"
-                    IsLightDismissEnabled="True">
+                    Placement="Center">
                 <Border Background="Black" Padding="16" CornerRadius="4"
                         BoxShadow="0 2 8 0 #40000000">
                     <views:FeedEditor Name="FeedEditorControl" />
