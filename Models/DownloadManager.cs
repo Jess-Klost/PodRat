@@ -82,6 +82,14 @@ public class DownloadManager
         }
     }
 
+    public static void RenameFeed(PodcastFeed feed, string newName)
+    {
+        if (Directory.Exists(Path.Combine(downloadDirectory, feed.Name)))
+        {
+            Directory.Move(Path.Combine(downloadDirectory, feed.Name), Path.Combine(downloadDirectory, newName));        
+        }
+    } 
+
     static async Task CopyToAsync(Stream source, Stream destination,
         int bufferSize = 81920, IProgress<long>? progress = null,
         CancellationToken cancellationToken = default)

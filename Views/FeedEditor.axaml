@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:vm="using:RSSPod.ViewModels"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            x:Class="RSSPod.Views.FeedEditor"
+            x:DataType="vm:FeedEditorViewModel">
+    <UserControl.DataContext>
+        <vm:FeedEditorViewModel />    
+    </UserControl.DataContext>
+
+    <StackPanel>
+        <Label Target="EditFeedNameBox" Content="Name" />
+        <TextBox Name="EditFeedNameBox" Width="150" Margin="5" Text="{Binding Name}"
+            PlaceholderText="{Binding FeedToEdit.Name}" />
+        <Label Target="EditFeedRSSBox" Content="RSS Link" />
+        <TextBox Name="EditFeedRSSBox" Width="150" Margin="5" 
+            Text="{Binding FeedToEdit.Uri}" 
+            ToolTip.Tip="{Binding FeedToEdit.Uri}"
+            ToolTip.ShowOnDisabled="True"
+            IsEnabled="False" />
+        <Button Command="{Binding EditFeedCommand}" HorizontalAlignment="Right" Margin="5">
+            Edit
+        </Button>
+    </StackPanel>
+</UserControl>

@@ -27,6 +27,7 @@ public partial class FeedViewer : UserControl
     {
         viewModel?.UpdateDownloadStatus += OnItemDownloadedChanged;
         viewModel?.ProgressChanged += UpdateProgress;
+        viewModel?.SelectedFeedModified += SelectedFeedModified;
     }
 
     private void InteractItem_OnClick(object? sender, RoutedEventArgs e)
@@ -66,6 +67,12 @@ public partial class FeedViewer : UserControl
         viewModel?.RemoveFeed();
     }
 
+    private void EditFeed_OnClick(object? sender, RoutedEventArgs e)
+    {
+        FeedEditorControl.SetFeedToEdit(viewModel?.SelectedFeed);
+        EditFeedPopup.IsOpen = true;
+    }
+
     private void FeedSelector_OnChange(object? sender, SelectionChangedEventArgs e)
     {
         if (e.Source == null)
@@ -77,6 +84,11 @@ public partial class FeedViewer : UserControl
         if (feed == null)
             return;
         viewModel?.OnFeedChanged(feed);
+    }
+
+    private void SelectedFeedModified(object? sender, EventArgs e)
+    {
+        FeedSelector.SelectedItem = viewModel?.SelectedFeed;
     }
 
     private void FeedList_SelectionChanged(object? sender, SelectionChangedEventArgs e)

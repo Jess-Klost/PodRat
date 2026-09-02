@@ -14,6 +14,8 @@ public partial class FeedViewerViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
+    public partial PodcastFeed? SelectedFeed { get; set; }
+    [ObservableProperty]
     public partial bool CurrentFeedLoading { get; set; } = false;
     [ObservableProperty]
     // Start valid, so no feed selected is properly displayed
@@ -23,11 +25,10 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public event EventHandler<string, bool> UpdateDownloadStatus;
     public event EventHandler<string, float> ProgressChanged;
-
+    public event EventHandler SelectedFeedModified;
 
     RSSFeedReader feedReader;
     DownloadManager downloadManager = new DownloadManager(DownloadDirectory);
-    PodcastFeed? selectedFeed;
 
     public FeedViewerViewModel()
     {
@@ -41,20 +42,25 @@ public partial class FeedViewerViewModel : ViewModelBase
         UserDataInstancer.SaveUserData();
     }
 
-    void OnUserDataChanged(object? sender, EventArgs e)
+    void OnUserDataChanged(object? sender, UserDataChangedEventArgs e)
     {
         UserData = UserDataInstancer.GetUserData();
+        if (e.changeType == UserDataChangedEventArgs.ChangeType.RenameFeed)
+        {
+            if (e.affectedFeed == SelectedFeed)
+                SelectedFeedModified.Invoke(this, EventArgs.Empty);
+        }
     }
 
     async void PopulateFeed()
     {
-        if (selectedFeed == null)
+        if (SelectedFeed == null)
             return;
         CurrentFeedLoading = true;
-        feedReader = new RSSFeedReader(selectedFeed.Uri);
+        feedReader = new RSSFeedReader(SelectedFeed.Uri);
         CurrentFeedValid = await feedReader.ReadRSSFeed();
         if (CurrentFeedValid)
-            CurrentFeed = feedReader.GetFeedItems(selectedFeed);
+            CurrentFeed = feedReader.GetFeedItems(SelectedFeed);
         else
             CurrentFeed = null;
         CurrentFeedLoading = false;
@@ -62,29 +68,29 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public async Task DownloadItem(string id)
     {
-        if (selectedFeed == null)
+        if (SelectedFeed == null)
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
             Progress<float> progress = new Progress<float>();
             progress.ProgressChanged += (sender, progress) => ProgressChanged?.Invoke(id, progress);
-            await downloadManager.DownloadItem(selectedFeed, item, progress);
+            await downloadManager.DownloadItem(SelectedFeed, item, progress);
             UpdateDownloadStatus?.Invoke(id, true);
         }
     }
 
     public void OnFeedChanged(PodcastFeed newFeed)
     {
-        selectedFeed = newFeed;
+        SelectedFeed = newFeed;
         Task.Run(() => PopulateFeed());
     }
 
     public void RemoveFeed()
     {
-        if (selectedFeed == null)
+        if (SelectedFeed == null)
             return;
-        UserDataInstancer.RemoveFeed(selectedFeed);
-        downloadManager.DeleteFeed(selectedFeed);
+        UserDataInstancer.RemoveFeed(SelectedFeed);
+        downloadManager.DeleteFeed(SelectedFeed);
         CurrentFeed = null;
         SaveUserData();
     }
@@ -92,20 +98,20 @@ public partial class FeedViewerViewModel : ViewModelBase
     public bool ItemDownloaded(string id)
     {
         if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
-            || selectedFeed == null)
+            || SelectedFeed == null)
         {
             return false;
         }
-        return DownloadManager.IsDownloaded(selectedFeed, item);
+        return DownloadManager.IsDownloaded(SelectedFeed, item);
     }
 
     public void DeleteItem(string id)
     {
-        if (selectedFeed == null)
+        if (SelectedFeed == null)
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
-            downloadManager.DeleteItem(selectedFeed, item);
+            downloadManager.DeleteItem(SelectedFeed, item);
             UpdateDownloadStatus?.Invoke(id, false);
         }
     }
@@ -113,10 +119,10 @@ public partial class FeedViewerViewModel : ViewModelBase
     public PodcastFeedItem? GetItem(string id)
     {
         if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
-            || selectedFeed == null)
+            || SelectedFeed == null)
         {
             return null;
         }
-        return new PodcastFeedItem { Feed = selectedFeed, Item = item };
+        return new PodcastFeedItem { Feed = SelectedFeed, Item = item };
     }
 }

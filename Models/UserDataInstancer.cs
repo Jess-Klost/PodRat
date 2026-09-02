@@ -4,12 +4,25 @@ using System.Text.Json;
 
 namespace RSSPod.Models;
 
+public class UserDataChangedEventArgs
+{
+    public static readonly UserDataChangedEventArgs Empty = new UserDataChangedEventArgs();
+
+    public enum ChangeType
+    {
+        RenameFeed
+    }
+
+    public ChangeType? changeType = null;
+    public PodcastFeed? affectedFeed = null;
+}
+
 public static class UserDataInstancer
 {
     private static UserData? instance = null;
     const string UserDataFile = "userdata.json";
 
-    public static event EventHandler UserDataChanged;
+    public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
 
     public static UserData GetUserData()
     {
@@ -28,7 +41,7 @@ public static class UserDataInstancer
             using StreamReader fileReader = new (jsonFile);
             string jsonString = fileReader.ReadToEnd();
             instance = JsonSerializer.Deserialize<UserData>(jsonString);
-            UserDataChanged?.Invoke(null, EventArgs.Empty);
+            UserDataChanged?.Invoke(null, UserDataChangedEventArgs.Empty);
         }
         catch (FileNotFoundException)
         {
@@ -47,12 +60,28 @@ public static class UserDataInstancer
     public static void AddFeed(PodcastFeed feed)
     {
         instance?.PodcastFeeds.Add(feed);
-        UserDataChanged?.Invoke(null, EventArgs.Empty);
+        UserDataChanged?.Invoke(null, UserDataChangedEventArgs.Empty);
     }
 
     public static void RemoveFeed(PodcastFeed feed)
     {
         instance?.PodcastFeeds.Remove(feed);
-        UserDataChanged?.Invoke(null, EventArgs.Empty);
+        UserDataChanged?.Invoke(null, UserDataChangedEventArgs.Empty);
+    }
+
+    public static void RenameFeed(PodcastFeed feed, string newName)
+    {
+        if (instance == null)
+            return;
+
+        int feedIndex = instance.PodcastFeeds.IndexOf(feed);
+        if (feedIndex < 0)
+            return;
+
+        feed.Name = newName;
+        instance?.PodcastFeeds[feedIndex] = feed;
+        UserDataChanged?.Invoke(null, new UserDataChangedEventArgs { 
+            changeType = UserDataChangedEventArgs.ChangeType.RenameFeed,
+            affectedFeed = feed });
     }
 }

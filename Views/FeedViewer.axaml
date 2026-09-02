@@ -34,7 +34,8 @@
 
     <DockPanel>
         <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
-            <ComboBox ItemsSource="{Binding UserData.PodcastFeeds}" 
+            <ComboBox Name="FeedSelector"
+                ItemsSource="{Binding UserData.PodcastFeeds}" 
                 PlaceholderText="Podcast Feed"
                 SelectionChanged="FeedSelector_OnChange">
                 <ComboBox.ItemTemplate>
@@ -57,11 +58,20 @@
                         Height="15" HorizontalAlignment="Center"/>
                 <Button.Flyout>
                     <MenuFlyout>
-                        <MenuItem Header="Delete" Click="RemoveFeed_OnClick"></MenuItem>    
+                        <MenuItem Header="Edit Feed" Click="EditFeed_OnClick" />
+                        <MenuItem Header="Delete Feed" Click="RemoveFeed_OnClick" /> 
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>
         </StackPanel>
+        <Popup Name="EditFeedPopup"
+                Placement="Center"
+                IsLightDismissEnabled="True">
+            <Border Background="Black" Padding="16" CornerRadius="4"
+                    BoxShadow="0 2 8 0 #40000000">
+                <views:FeedEditor Name="FeedEditorControl" />
+            </Border>
+        </Popup>
         <Panel DockPanel.Dock="Bottom">
             <TextBlock Text="No feed to display." Foreground="{DynamicResource BaseMediumLow}"
                 HorizontalAlignment="Center" VerticalAlignment="Center">

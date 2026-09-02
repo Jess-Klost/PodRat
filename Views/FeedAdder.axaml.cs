@@ -1,6 +1,5 @@
 using System;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using RSSPod.ViewModels;
 
 namespace RSSPod.Views;
