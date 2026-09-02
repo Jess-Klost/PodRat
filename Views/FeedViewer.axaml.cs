@@ -15,6 +15,8 @@ public partial class FeedViewer : UserControl
     private FeedViewerViewModel? viewModel => DataContext as FeedViewerViewModel;
 
     public event EventHandler<PodcastFeedItem> loadItem;
+    public event EventHandler backButtonPressed;
+
 
     public FeedViewer()
     {
@@ -108,6 +110,12 @@ public partial class FeedViewer : UserControl
         FeedSelector.SelectedItem = viewModel?.SelectedFeed;
     }
 
+    public void SetSelectedFeed(PodcastFeed feed)
+    {
+        FeedSelector.SelectedItem = feed;
+        viewModel?.OnFeedChanged(feed);
+    }
+
     private void FeedList_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (sender is ListBox listBox) 
@@ -134,6 +142,11 @@ public partial class FeedViewer : UserControl
     private void AddFeed_Closed(object? sender, EventArgs e)
     {
         FeedAdderFlyout.Reset();
+    }
+
+    private void BackButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        backButtonPressed.Invoke(this, EventArgs.Empty);
     }
 
     void OnItemDownloadedChanged(string id, bool downloaded)

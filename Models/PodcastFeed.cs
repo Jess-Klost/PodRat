@@ -1,4 +1,6 @@
 using System;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace RSSPod.Models;
 
@@ -6,6 +8,14 @@ public class PodcastFeed
 {
     public string Name { get; set; }
     public string Uri { get; set; }
+
+    [JsonIgnore]
+    public Task<Uri?> Thumbnail { 
+        get
+        {
+            return GetFeedThumbnailUri();
+        } 
+    }
 
     public PodcastFeed(string name, string uri)
     {
@@ -22,5 +32,14 @@ public class PodcastFeed
             return false;
         }
         return true;
+    }
+
+    async Task<Uri?> GetFeedThumbnailUri()
+    {
+        // TODO: optimize this, so that we are not reading the same feed 
+        // multiple times for no reason  
+        RSSFeedReader reader = new RSSFeedReader(Uri);
+        await reader.ReadRSSFeed();
+        return reader.GetImageUri();
     }
 }

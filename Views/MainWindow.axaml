@@ -27,7 +27,8 @@
             <ColumnDefinition Width="4"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <views:FeedViewer Name="FeedViewerControl" Grid.Column="0" />
+        <views:FeedsOverview Name="FeedsOverviewControl" Grid.Column="0" IsVisible="True" />
+        <views:FeedViewer Name="FeedViewerControl" Grid.Column="0" IsVisible="False" />
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
         <views:MediaPlayer Name="MediaPlayerControl" Grid.Column="2" />
     </Grid>

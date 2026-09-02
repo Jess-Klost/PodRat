@@ -86,6 +86,13 @@ public class RSSFeedReader
         return item != null;
     }
 
+    public Uri? GetImageUri()
+    {
+        if (feed == null)
+            return null;
+        return feed.ImageUrl;
+    }
+
     public static bool GetImageFromItem(SyndicationItem item, out string imageLink)
     {
         foreach (SyndicationElementExtension extension in item.ElementExtensions)

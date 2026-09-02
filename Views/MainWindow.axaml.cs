@@ -1,9 +1,6 @@
 using System;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.VisualTree;
+using RSSPod.Models;
 using RSSPod.ViewModels;
 
 namespace RSSPod.Views;
@@ -24,5 +21,20 @@ public partial class MainWindow : Window
             IsDownloadedToIconConverter.downloadIcon = downloadIcon;
         }
         FeedViewerControl.loadItem += (sender, item) => MediaPlayerControl.LoadItem(item);
+        FeedViewerControl.backButtonPressed += FeedViewerControl_OnBackButtonPressed;
+        FeedsOverviewControl.selectFeed += FeedOverviewControl_OnFeedSelected;
+    }
+
+    private void FeedOverviewControl_OnFeedSelected(object? sender, PodcastFeed feed)
+    {
+        FeedsOverviewControl.IsVisible = false;
+        FeedViewerControl.IsVisible = true;
+        FeedViewerControl.SetSelectedFeed(feed);
+    }
+
+    private void FeedViewerControl_OnBackButtonPressed(object? sender, EventArgs e)
+    {
+        FeedsOverviewControl.IsVisible = true;
+        FeedViewerControl.IsVisible = false;
     }
 }

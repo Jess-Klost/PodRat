@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:vm="using:RSSPod.ViewModels"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+            x:Class="RSSPod.Views.FeedsOverview"
+            x:DataType="vm:FeedsOverviewViewModel">
+    <UserControl.DataContext>
+        <vm:FeedsOverviewViewModel />    
+    </UserControl.DataContext>
+
+    <ListBox ItemsSource="{Binding UserData.PodcastFeeds}" SelectionChanged="FeedsGrid_OnSelectionChanged">
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"></WrapPanel>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid RowDefinitions="*,*" RowSpacing="8">
+                    <Image Height="100" Width="100" Grid.Row="0" asyncImageLoader:ImageLoader.Source="{Binding Thumbnail^}" />
+                    <TextBlock Text="{Binding Name}" Grid.Row="1" TextAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+
+</UserControl>

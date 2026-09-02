@@ -1,4 +1,6 @@
-﻿using RSSPod.Models;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using RSSPod.Models;
 
 namespace RSSPod.ViewModels;
 
