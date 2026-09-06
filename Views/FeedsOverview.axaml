@@ -16,7 +16,10 @@
             <Bold>Feeds</Bold>
         </TextBlock>
         <views:FeedAddButton Grid.Row="0" HorizontalAlignment="Right" Padding="8"/>
-        <ListBox ItemsSource="{Binding UserData.PodcastFeeds}" SelectionChanged="FeedsGrid_OnSelectionChanged" Grid.Row="1">
+        <ListBox Name="FeedsGrid"
+            ItemsSource="{Binding UserData.PodcastFeeds}" 
+            SelectionChanged="FeedsGrid_OnSelectionChanged" 
+            Grid.Row="1">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"></WrapPanel>
@@ -28,6 +31,12 @@
                         <Image Height="100" Width="100" Grid.Row="0" 
                             asyncImageLoader:ImageLoader.Source="{Binding Thumbnail^}" />
                         <TextBlock Text="{Binding Name}" Grid.Row="1" TextAlignment="Center" />
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Edit" Tag="{Binding}" Click="EditFeed_Click" />
+                                <MenuItem Header="Delete" Tag="{Binding}" Click="DeleteFeed_Click" />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
