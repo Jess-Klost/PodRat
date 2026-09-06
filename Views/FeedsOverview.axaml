@@ -12,7 +12,9 @@
     </UserControl.DataContext>
 
     <Grid RowDefinitions="Auto,*">
-        <TextBlock VerticalAlignment="Center" Padding="8">Feeds</TextBlock>
+        <TextBlock VerticalAlignment="Center" Padding="8">
+            <Bold>Feeds</Bold>
+        </TextBlock>
         <views:FeedAddButton Grid.Row="0" HorizontalAlignment="Right" Padding="8"/>
         <ListBox ItemsSource="{Binding UserData.PodcastFeeds}" SelectionChanged="FeedsGrid_OnSelectionChanged" Grid.Row="1">
             <ListBox.ItemsPanel>
