@@ -35,7 +35,10 @@
     <Grid> 
         <DockPanel>
             <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
-                <Button Content="Back" Click="BackButton_OnClick" />
+                <Button Click="BackButton_OnClick">
+                    <PathIcon Data="{StaticResource arrow_left_regular}" Width="15" 
+                            Height="15" HorizontalAlignment="Center"/>
+                </Button>
                 <ComboBox Name="FeedSelector"
                     ItemsSource="{Binding UserData.PodcastFeeds}" 
                     PlaceholderText="Podcast Feed"
