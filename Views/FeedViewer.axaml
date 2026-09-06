@@ -173,7 +173,12 @@
                                         <FlyoutBase.AttachedFlyout>
                                             <Flyout FlyoutPresenterClasses="large" ShowMode="TransientWithDismissOnPointerMoveAway">
                                                 <StackPanel Spacing="8" MaxWidth="300">
-                                                    <Button Name="DeleteButton" Tag="{Binding Item.Id}" Click="DeleteItem_OnClick">Delete</Button>
+                                                    <Button Name="DeleteButton" 
+                                                        Tag="{Binding Item.Id}" 
+                                                        Click="DeleteItem_OnClick"
+                                                        IsVisible="{Binding IsDownloaded^}">
+                                                        Delete
+                                                    </Button>
                                                     <TextBlock Foreground="{DynamicResource BaseMediumHigh}"
                                                         IsVisible="{Binding HasAudio}">
                                                         <TextBlock.Text>
