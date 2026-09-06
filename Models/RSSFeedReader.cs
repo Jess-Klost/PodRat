@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
+using System.Security;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
@@ -29,6 +30,10 @@ public class RSSFeedReader
             try 
             {
                 stream = await client.GetStreamAsync(uri);
+                using (XmlReader reader = XmlReader.Create(stream))
+                {
+                    feed = SyndicationFeed.Load(reader);   
+                }
             }
             catch (InvalidOperationException)
             {
@@ -46,9 +51,13 @@ public class RSSFeedReader
             {
                 return false;
             }
-            using (XmlReader reader = XmlReader.Create(stream))
+            catch (SecurityException)
             {
-                feed = SyndicationFeed.Load(reader);   
+                return false;
+            }
+            catch (XmlException)
+            {
+                return false;
             }
         }
         itemsDict = new Dictionary<string, SyndicationItem>();

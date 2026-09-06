@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:vm="using:RSSPod.ViewModels"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:views="using:RSSPod.Views"
+            x:Class="RSSPod.Views.FeedAddButton"
+            x:DataType="vm:FeedAddButtonViewModel">
+    <UserControl.DataContext>
+        <vm:FeedAddButtonViewModel />    
+    </UserControl.DataContext>
+
+    <Button Content="Add Feed"  Name="AddFeedPopupButton" >
+        <Button.Flyout>
+            <Flyout Closed="AddFeed_Closed">
+                <StackPanel>
+                    <views:FeedAdder Name="FeedAdderFlyout" />
+                </StackPanel>
+            </Flyout>
+        </Button.Flyout>    
+    </Button>
+</UserControl>
