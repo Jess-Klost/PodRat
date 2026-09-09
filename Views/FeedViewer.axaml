@@ -35,7 +35,7 @@
     <Grid> 
         <DockPanel>
             <StackPanel Name="FeedControls" Orientation="Horizontal"  DockPanel.Dock="Top">
-                <Button Click="BackButton_OnClick">
+                <Button Click="BackButton_OnClick" ToolTip.Tip="Back">
                     <PathIcon Data="{StaticResource arrow_left_regular}" Width="15" 
                             Height="15" HorizontalAlignment="Center"/>
                 </Button>
