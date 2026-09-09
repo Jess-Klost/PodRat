@@ -10,7 +10,7 @@ public class PodcastFeed
     public string Uri { get; set; }
 
     [JsonIgnore]
-    public Task<Uri?> Thumbnail { 
+    public Task<Uri?> Thumbnail {
         get
         {
             return GetFeedThumbnailUri();
@@ -39,7 +39,8 @@ public class PodcastFeed
         // TODO: optimize this, so that we are not reading the same feed 
         // multiple times for no reason  
         RSSFeedReader reader = new RSSFeedReader(Uri);
-        await reader.ReadRSSFeed();
+        if (!await reader.ReadRSSFeed())
+            return null;
         return reader.GetImageUri();
     }
 }

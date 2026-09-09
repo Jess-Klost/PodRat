@@ -27,7 +27,7 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid RowDefinitions="*,*" RowSpacing="8">
+                    <Grid RowDefinitions="*,*" RowSpacing="8" Background="Transparent">
                         <Image Height="100" Width="100" Grid.Row="0" 
                             asyncImageLoader:ImageLoader.Source="{Binding Thumbnail^}" />
                         <TextBlock Text="{Binding Name}" Grid.Row="1" TextAlignment="Center" />

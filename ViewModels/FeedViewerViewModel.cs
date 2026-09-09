@@ -31,7 +31,6 @@ public partial class FeedViewerViewModel : ViewModelBase
     public event EventHandler SelectedFeedModified;
 
     RSSFeedReader feedReader;
-    DownloadManager downloadManager = new DownloadManager(DownloadDirectory);
 
     public FeedViewerViewModel()
     {
@@ -77,7 +76,7 @@ public partial class FeedViewerViewModel : ViewModelBase
         {
             Progress<float> progress = new Progress<float>();
             progress.ProgressChanged += (sender, progress) => ProgressChanged?.Invoke(id, progress);
-            await downloadManager.DownloadItem(SelectedFeed, item, progress);
+            await UserDataInstancer.DownloadManagerInstance.DownloadItem(SelectedFeed, item, progress);
             UpdateDownloadStatus?.Invoke(id, true);
         }
     }
@@ -93,9 +92,7 @@ public partial class FeedViewerViewModel : ViewModelBase
         if (SelectedFeed == null)
             return;
         UserDataInstancer.RemoveFeed(SelectedFeed);
-        downloadManager.DeleteFeed(SelectedFeed);
         CurrentFeed = null;
-        SaveUserData();
     }
 
     public bool ItemDownloaded(string id)
@@ -114,7 +111,7 @@ public partial class FeedViewerViewModel : ViewModelBase
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
-            downloadManager.DeleteItem(SelectedFeed, item);
+            UserDataInstancer.DownloadManagerInstance.DeleteItem(SelectedFeed, item);
             UpdateDownloadStatus?.Invoke(id, false);
         }
     }

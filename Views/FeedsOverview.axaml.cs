@@ -45,7 +45,7 @@ public partial class FeedsOverview : UserControl
         {
             if (control.Tag is PodcastFeed feed)
             {
-                // TODO: Set up delete feed
+                UserDataInstancer.RemoveFeed(feed);
             }
         }
     }

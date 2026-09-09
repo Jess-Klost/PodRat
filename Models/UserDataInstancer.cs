@@ -24,6 +24,8 @@ public static class UserDataInstancer
 
     public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
 
+    public static DownloadManager DownloadManagerInstance { get; private set; } = new DownloadManager();
+
     public static UserData GetUserData()
     {
         if (instance == null) 
@@ -63,10 +65,13 @@ public static class UserDataInstancer
         UserDataChanged?.Invoke(null, UserDataChangedEventArgs.Empty);
     }
 
-    public static void RemoveFeed(PodcastFeed feed)
+    public static void RemoveFeed(PodcastFeed feed, bool saveAfterOperation = true)
     {
         instance?.PodcastFeeds.Remove(feed);
+        DownloadManagerInstance.DeleteFeed(feed);
         UserDataChanged?.Invoke(null, UserDataChangedEventArgs.Empty);
+        if (saveAfterOperation)
+            SaveUserData();
     }
 
     public static void RenameFeed(PodcastFeed feed, string newName)
