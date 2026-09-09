@@ -7,6 +7,8 @@ public partial class FeedsOverviewViewModel : ViewModelBase
 {
     [ObservableProperty]
     public partial UserData UserData { get; set; }
+    [ObservableProperty]
+    public partial bool EditFeedPopupVisible { get; set; } = false;
 
     public FeedsOverviewViewModel()
     {

@@ -18,6 +18,8 @@ public partial class FeedsOverview : UserControl
         InitializeComponent();
         FeedsGrid.AddHandler(PointerPressedEvent, FeedsGrid_PointerPressed,
             RoutingStrategies.Tunnel);
+        FeedEditorControl.EditFeedSubmitted += OnFeedEditorSubmit;
+        PopupBackground.PointerPressed += OnPopupBackgroundPointerPressed;
     }
 
     private void FeedsGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -56,8 +58,21 @@ public partial class FeedsOverview : UserControl
         {
             if (control.Tag is PodcastFeed feed)
             {
-                // TODO: Set up edit feed
+                FeedEditorControl.SetFeedToEdit(feed);
+                viewModel?.EditFeedPopupVisible = true;
             }
         }
+    }
+    
+    private void OnFeedEditorSubmit(object? sender, EventArgs e)
+    {
+        viewModel?.EditFeedPopupVisible = false;
+    }
+
+    private void OnPopupBackgroundPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        // Light dismiss does not work with current Avalonia version, so instead
+        // dismiss when user presses grayed out background
+        viewModel?.EditFeedPopupVisible = false;
     }
 }

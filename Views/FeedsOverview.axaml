@@ -10,36 +10,46 @@
     <UserControl.DataContext>
         <vm:FeedsOverviewViewModel />    
     </UserControl.DataContext>
-
-    <Grid RowDefinitions="Auto,*">
-        <TextBlock VerticalAlignment="Center" Padding="8">
-            <Bold>Feeds</Bold>
-        </TextBlock>
-        <views:FeedAddButton Grid.Row="0" HorizontalAlignment="Right" Padding="8"/>
-        <ListBox Name="FeedsGrid"
-            ItemsSource="{Binding UserData.PodcastFeeds}" 
-            SelectionChanged="FeedsGrid_OnSelectionChanged" 
-            Grid.Row="1">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"></WrapPanel>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid RowDefinitions="*,*" RowSpacing="8" Background="Transparent">
-                        <Image Height="100" Width="100" Grid.Row="0" 
-                            asyncImageLoader:ImageLoader.Source="{Binding Thumbnail^}" />
-                        <TextBlock Text="{Binding Name}" Grid.Row="1" TextAlignment="Center" />
-                        <Grid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Edit" Tag="{Binding}" Click="EditFeed_Click" />
-                                <MenuItem Header="Delete" Tag="{Binding}" Click="DeleteFeed_Click" />
-                            </ContextMenu>
-                        </Grid.ContextMenu>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+    <Grid> 
+        <Grid RowDefinitions="Auto,*">
+            <TextBlock VerticalAlignment="Center" Padding="8">
+                <Bold>Feeds</Bold>
+            </TextBlock>
+            <views:FeedAddButton Grid.Row="0" HorizontalAlignment="Right" Padding="8"/>
+            <ListBox Name="FeedsGrid"
+                ItemsSource="{Binding UserData.PodcastFeeds}" 
+                SelectionChanged="FeedsGrid_OnSelectionChanged" 
+                Grid.Row="1">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid RowDefinitions="*,*" RowSpacing="8" Background="Transparent">
+                            <Image Height="100" Width="100" Grid.Row="0" 
+                                asyncImageLoader:ImageLoader.Source="{Binding Thumbnail^}" />
+                            <TextBlock Text="{Binding Name}" Grid.Row="1" TextAlignment="Center" />
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Edit" Tag="{Binding}" Click="EditFeed_Click" />
+                                    <MenuItem Header="Delete" Tag="{Binding}" Click="DeleteFeed_Click" />
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Border Name="PopupBackground" IsVisible="{Binding EditFeedPopupVisible}" Background="#40000000">
+            <Popup IsOpen="{Binding EditFeedPopupVisible}"
+                    Placement="Center">
+                <Border Background="Black" Padding="16" CornerRadius="4"
+                        BoxShadow="0 2 8 0 #40000000">
+                    <views:FeedEditor Name="FeedEditorControl" />
+                </Border>
+            </Popup>
+        </Border> 
     </Grid>
 </UserControl>
