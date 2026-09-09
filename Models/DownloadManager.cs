@@ -49,7 +49,7 @@ public class DownloadManager
                     {
                         if (progress is null || !contentLength.HasValue) 
                         {
-                            await download.CopyToAsync(fs);
+                            await download.CopyToAsync(fs, cancellationToken);
                             return;
                         }
                         var progressWrapper = new Progress<long> (totalBytes =>
