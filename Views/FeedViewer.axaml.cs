@@ -230,7 +230,7 @@ public partial class FeedViewer : UserControl
         // Show listen data progress bar
         ProgressBar? listenDataProgressBar = FindChildWithTag("ListenDataProgressBar", interactButton) as ProgressBar;
         if (listenDataProgressBar != null)
-            listenDataProgressBar.IsVisible = true;
+            listenDataProgressBar.IsVisible = downloadStatus == DownloadManager.DownloadStatus.downloaded;
         
         // Set to proper icon
         string iconString;
