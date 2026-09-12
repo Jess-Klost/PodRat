@@ -153,6 +153,8 @@
                                         <Button VerticalAlignment="Top" 
                                             Name="{Binding Item.Id}"
                                             Click="InteractItem_OnClick"
+                                            PointerEntered="InteractItem_PointerEntered"
+                                            PointerExited="InteractItem_PointerExited"
                                             Grid.Column="3" Grid.RowSpan="2"
                                             IsVisible="{Binding HasAudio}">
                                             <StackPanel>

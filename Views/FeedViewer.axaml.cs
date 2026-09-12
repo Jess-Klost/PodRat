@@ -37,12 +37,14 @@ public partial class FeedViewer : UserControl
 
     private void InteractItem_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (e.Source == null)
+        if (viewModel == null || e.Source == null)
             return;
         Button? button = e.Source as Button;
         if (button == null || button.Name == null)
             return;
-        if (viewModel != null && viewModel.ItemDownloaded(button.Name))
+        
+        DownloadManager.DownloadStatus status = viewModel.ItemDownloadStatus(button.Name);
+        if (status == DownloadManager.DownloadStatus.downloaded)
         {
             PodcastFeedItem? item = viewModel?.GetItem(button.Name);
             if (item != null)
@@ -50,9 +52,51 @@ public partial class FeedViewer : UserControl
                 loadItem?.Invoke(this, item);
             }
         }
-        else
+        else if (status == DownloadManager.DownloadStatus.notDownloaded)
         {
             viewModel?.DownloadItem(button.Name);
+        }
+        else if (status == DownloadManager.DownloadStatus.currentlyDownloading)
+        {
+            viewModel?.CancelDownloadItem(button.Name);
+        }
+    }
+
+    private void InteractItem_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        if (viewModel == null || e.Source == null)
+            return;
+        Button? button = e.Source as Button;
+        if (button == null || button.Name == null)
+            return;
+
+        PathIcon? icon = FindChildOfType<PathIcon>(button) as PathIcon;
+        if (icon == null)
+            return;
+        
+        DownloadManager.DownloadStatus status = viewModel.ItemDownloadStatus(button.Name);
+        if (status == DownloadManager.DownloadStatus.currentlyDownloading)
+        {
+            icon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable("dismiss_circle_regular"));
+        }
+    }
+
+    private void InteractItem_PointerExited(object? sender, PointerEventArgs e)
+    {
+        if (viewModel == null || e.Source == null)
+            return;
+        Button? button = e.Source as Button;
+        if (button == null || button.Name == null)
+            return;
+
+        PathIcon? icon = FindChildOfType<PathIcon>(button) as PathIcon;
+        if (icon == null)
+            return;
+        
+        DownloadManager.DownloadStatus status = viewModel.ItemDownloadStatus(button.Name);
+        if (status == DownloadManager.DownloadStatus.currentlyDownloading)
+        {
+            icon.Bind(PathIcon.DataProperty, Resources.GetResourceObservable("arrow_download_regular"));
         }
     }
     
@@ -149,12 +193,12 @@ public partial class FeedViewer : UserControl
         backButtonPressed.Invoke(this, EventArgs.Empty);
     }
 
-    void OnItemDownloadedChanged(string id, bool downloaded)
+    void OnItemDownloadedChanged(string id, DownloadManager.DownloadStatus downloadStatus)
     {
-        SetItemButtonDownloadState(id, downloaded);
+        SetItemButtonDownloadState(id, downloadStatus);
     }
 
-    void SetItemButtonDownloadState(string id, bool downloaded)
+    void SetItemButtonDownloadState(string id, DownloadManager.DownloadStatus downloadStatus)
     {
         // Find button
         Button? interactButton = FindNamedChild(id, FeedList) as Button;
@@ -169,13 +213,12 @@ public partial class FeedViewer : UserControl
         if (progressBar != null)
         {
             progressBar.Value = 0;
-            progressBar.IsVisible = !downloaded;
+            progressBar.IsVisible = downloadStatus == DownloadManager.DownloadStatus.notDownloaded;
         }
-
         
         // Set to proper icon
         string iconString;
-        if (downloaded)
+        if (downloadStatus == DownloadManager.DownloadStatus.downloaded)
         {
             iconString = "play_regular";
         }

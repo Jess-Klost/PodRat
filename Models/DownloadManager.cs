@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.ConstrainedExecution;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +13,15 @@ namespace RSSPod.Models;
 public class DownloadManager
 {
     public static string downloadDirectory { get; set; } = "AudioDownloads";
+    
+    public enum DownloadStatus
+    {
+        notDownloaded,
+        currentlyDownloading,
+        downloaded       
+    }
+
+    static Dictionary<SyndicationItem, CancellationToken> currentDownloads = new Dictionary<SyndicationItem, CancellationToken>();
 
     public DownloadManager()
     {
@@ -27,43 +38,56 @@ public class DownloadManager
 
     public async Task DownloadItem(PodcastFeed feed, SyndicationItem item, IProgress<float>? progress = null, CancellationToken cancellationToken = default)
     {
-        if (!Directory.Exists(Path.Combine(downloadDirectory, feed.Name)))
-            Directory.CreateDirectory(Path.Combine(downloadDirectory, feed.Name));
-        if (!FindAudioLink(item, out Uri? audioLink))
-        {
-            throw new InvalidOperationException("DownloadManager: No audio link found in item");
-        }
-        if (audioLink == null)
-            throw new InvalidOperationException("DownloadManager: No audio link found in item");
-        using (HttpClient client = new HttpClient())
-        {
-            try
-            {
-                using (var response = await client.GetAsync(audioLink, HttpCompletionOption.ResponseHeadersRead)) 
-                {
-                    var contentLength = response.Content.Headers.ContentLength;
-                    using (var download = await response.Content.ReadAsStreamAsync())
-                    using (FileStream fs = 
-                        new FileStream(DownloadedItemPath(feed, item, audioLink), 
-                        FileMode.CreateNew)) 
-                    {
-                        if (progress is null || !contentLength.HasValue) 
-                        {
-                            await download.CopyToAsync(fs, cancellationToken);
-                            return;
-                        }
-                        var progressWrapper = new Progress<long> (totalBytes =>
-                             progress.Report(GetProgressPercentage (totalBytes, contentLength.Value)));
-                        await CopyToAsync(download, fs, 81920, progressWrapper, cancellationToken);
-                    }
-                }
+        currentDownloads.Add(item, cancellationToken);
 
-                float GetProgressPercentage (float totalBytes, float currentBytes) => (totalBytes / currentBytes) * 100f;
-            } 
-            catch (InvalidOperationException)
-            {
-                return;
+        try {
+                if (!Directory.Exists(Path.Combine(downloadDirectory, feed.Name)))
+                    Directory.CreateDirectory(Path.Combine(downloadDirectory, feed.Name));
+                if (!FindAudioLink(item, out Uri? audioLink))
+                {
+                    throw new InvalidOperationException("DownloadManager: No audio link found in item");
+                }
+                if (audioLink == null)
+                    throw new InvalidOperationException("DownloadManager: No audio link found in item");
+                using (HttpClient client = new HttpClient())
+                {
+                    try
+                    {
+                        using (var response = await client.GetAsync(audioLink, HttpCompletionOption.ResponseHeadersRead)) 
+                        {
+                            var contentLength = response.Content.Headers.ContentLength;
+                            using (var download = await response.Content.ReadAsStreamAsync())
+                            using (FileStream fs = 
+                                new FileStream(DownloadedItemPath(feed, item, audioLink), 
+                                FileMode.CreateNew)) 
+                            {
+                                if (progress is null || !contentLength.HasValue) 
+                                {
+                                    await download.CopyToAsync(fs, cancellationToken);
+                                    return;
+                                }
+                                var progressWrapper = new Progress<long> (totalBytes =>
+                                    progress.Report(GetProgressPercentage (totalBytes, contentLength.Value)));
+                                await CopyToAsync(download, fs, 81920, progressWrapper, cancellationToken);
+                            }
+                        }
+
+                        float GetProgressPercentage (float totalBytes, float currentBytes) => (totalBytes / currentBytes) * 100f;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // Download canceled, remove partially downloaded file
+                        File.Delete(DownloadedItemPath(feed, item));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        return;
+                    }
             }
+        }
+        finally
+        {
+            currentDownloads.Remove(item);
         }
     }
 
@@ -120,11 +144,29 @@ public class DownloadManager
 
     public static bool IsDownloaded(PodcastFeed feed, SyndicationItem item)
     {
-        if (FindAudioLink(item, out Uri? audioLink) && audioLink != null)
+        if (currentDownloads.ContainsKey(item)) // currently downloading, return false
+        {
+            return false;
+        }
+        else if (FindAudioLink(item, out Uri? audioLink) && audioLink != null)
         {
             return File.Exists(DownloadedItemPath(feed, item, audioLink));
         }
         return false;
+    }
+
+    public static DownloadStatus GetDownloadStatus(PodcastFeed feed, SyndicationItem item)
+    {
+        if (currentDownloads.ContainsKey(item)) // currently downloading, return false
+        {
+            return DownloadStatus.currentlyDownloading;
+        }
+        else if (FindAudioLink(item, out Uri? audioLink) && audioLink != null 
+            && File.Exists(DownloadedItemPath(feed, item, audioLink)))
+        {
+            return DownloadStatus.downloaded;
+        }
+        return DownloadStatus.notDownloaded;
     }
 
     static bool FindAudioLink(SyndicationItem item, out Uri? audioLink)
