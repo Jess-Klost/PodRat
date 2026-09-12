@@ -109,6 +109,17 @@ public partial class FeedViewer : UserControl
         if (button == null || button.Tag == null || (id = button.Tag as string) == null)
             return;
         viewModel?.DeleteItem(id);
+
+        // Switch progress bar back to download bar
+        // Find button
+        Button? interactButton = FindNamedChild(id, FeedList) as Button;
+        if (interactButton == null)
+            return;
+        
+        // Hide listen data progress bar
+        ProgressBar? listenDataProgressBar = FindChildWithTag("ListenDataProgressBar", interactButton) as ProgressBar;
+        if (listenDataProgressBar != null)
+            listenDataProgressBar.IsVisible = false;
     }
 
     private void RemoveFeed_OnClick(object? sender, RoutedEventArgs e)
@@ -209,12 +220,17 @@ public partial class FeedViewer : UserControl
             return;
         
         // Set progress bar visibility
-        ProgressBar? progressBar = FindChildOfType<ProgressBar>(interactButton) as ProgressBar;
+        ProgressBar? progressBar = FindChildWithTag("DownloadProgressBar", interactButton) as ProgressBar;
         if (progressBar != null)
         {
             progressBar.Value = 0;
             progressBar.IsVisible = downloadStatus == DownloadManager.DownloadStatus.notDownloaded;
         }
+
+        // Show listen data progress bar
+        ProgressBar? listenDataProgressBar = FindChildWithTag("ListenDataProgressBar", interactButton) as ProgressBar;
+        if (listenDataProgressBar != null)
+            listenDataProgressBar.IsVisible = true;
         
         // Set to proper icon
         string iconString;
@@ -257,6 +273,23 @@ public partial class FeedViewer : UserControl
             if (child is T)
             {
                 return child;
+            }        
+        }
+        return null;
+    }
+
+    Avalonia.Visual? FindChildWithTag(string tag, Control parent)
+    {
+        Control? control;
+        string? tagString;
+        foreach(Avalonia.Visual child in parent.GetVisualDescendants())
+        {
+            control = child as Control;
+            if (control != null)
+            {
+                tagString = control.Tag as string;
+                if (tagString != null && tagString == tag)
+                    return child;
             }        
         }
         return null;
