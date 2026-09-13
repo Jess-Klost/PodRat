@@ -26,4 +26,11 @@
     <PackageReference Include="LibVLCSharp.Avalonia" Version="3.9.7.1" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="10.0.8" />
   </ItemGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <DefineConstants>OS_WINDOWS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <DefineConstants>OS_LINUX</DefineConstants>
+  </PropertyGroup>
 </Project>

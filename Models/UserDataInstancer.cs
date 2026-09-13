@@ -20,7 +20,12 @@ public class UserDataChangedEventArgs
 public static class UserDataInstancer
 {
     private static UserData? instance = null;
-    const string UserDataFile = "userdata.json";
+    const string UserDataFile = 
+    #if OS_WINDOWS
+        "userdata.json";
+    #elif OS_LINUX
+        ".podbat/userdata.json";
+    #endif
 
     public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
 

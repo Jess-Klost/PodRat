@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.ConstrainedExecution;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,12 @@ namespace PodRat.Models;
 
 public class DownloadManager
 {
-    public static string downloadDirectory { get; set; } = "AudioDownloads";
+    public static string downloadDirectory { get; set; } = 
+    #if OS_WINDOWS
+        "AudioDownloads";
+    #elif OS_LINUX
+        ".podbat/AudioDownloads";
+    #endif
     
     public enum DownloadStatus
     {
