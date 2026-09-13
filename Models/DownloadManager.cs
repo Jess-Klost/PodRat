@@ -15,7 +15,7 @@ public class DownloadManager
     #if OS_WINDOWS
         "AudioDownloads";
     #elif OS_LINUX
-        ".podbat/AudioDownloads";
+        ".podrat/AudioDownloads";
     #endif
     
     public enum DownloadStatus
