@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public sealed class DirectoryNameAttribute : ValidationAttribute
 {

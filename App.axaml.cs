@@ -2,11 +2,11 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using RSSPod.Models;
-using RSSPod.ViewModels;
-using RSSPod.Views;
+using PodBat.Models;
+using PodBat.ViewModels;
+using PodBat.Views;
 
-namespace RSSPod;
+namespace PodBat;
 
 public partial class App : Application
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class FeedListenData
 {

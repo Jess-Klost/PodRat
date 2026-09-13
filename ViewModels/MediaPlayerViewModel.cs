@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
-using RSSPod.Models;
+using PodBat.Models;
 
-namespace RSSPod.ViewModels;
+namespace PodBat.ViewModels;
 
 public partial class MediaPlayerViewModel : ViewModelBase
 {

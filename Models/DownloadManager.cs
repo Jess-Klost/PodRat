@@ -8,7 +8,7 @@ using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class DownloadManager
 {

@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using RSSPod.ViewModels;
+using PodBat.ViewModels;
 
-namespace RSSPod;
+namespace PodBat;
 
 /// <summary>
 /// Given a view model, returns the corresponding view if possible.

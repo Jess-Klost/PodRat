@@ -5,9 +5,9 @@ using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using RSSPod.Models;
+using PodBat.Models;
 
-namespace RSSPod.ViewModels;
+namespace PodBat.ViewModels;
 
 public partial class FeedViewerViewModel : ViewModelBase
 {

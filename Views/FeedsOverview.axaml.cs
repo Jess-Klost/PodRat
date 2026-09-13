@@ -1,11 +1,11 @@
 using System;
 using Avalonia.Interactivity;
 using Avalonia.Controls;
-using RSSPod.Models;
-using RSSPod.ViewModels;
+using PodBat.Models;
+using PodBat.ViewModels;
 using Avalonia.Input;
 
-namespace RSSPod.Views;
+namespace PodBat.Views;
 
 public partial class FeedsOverview : UserControl
 {

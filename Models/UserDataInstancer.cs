@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class UserDataChangedEventArgs
 {

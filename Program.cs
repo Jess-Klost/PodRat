@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace RSSPod;
+namespace PodBat;
 
 sealed class Program
 {

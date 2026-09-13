@@ -1,12 +1,12 @@
 <UserControl xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:vm="using:RSSPod.ViewModels"
+            xmlns:vm="using:PodBat.ViewModels"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:local="clr-namespace:RSSPod;assembly=RSSPod"
-            xmlns:views="clr-namespace:RSSPod.Views"
+            xmlns:local="clr-namespace:PodBat;assembly=PodBat"
+            xmlns:views="clr-namespace:PodBat.Views"
             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-            x:Class="RSSPod.Views.FeedViewer"
+            x:Class="PodBat.Views.FeedViewer"
             x:DataType="vm:FeedViewerViewModel">
     <UserControl.DataContext>
         <vm:FeedViewerViewModel />    

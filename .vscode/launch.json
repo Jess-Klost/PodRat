@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Avalonia: RSSPod",
+            "name": "Avalonia: PodBat",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/RSSPod.csproj"
+            "projectPath": "${workspaceFolder}/PodBat.csproj"
         }
     ]
 }

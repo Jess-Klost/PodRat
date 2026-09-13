@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace RSSPod.ViewModels;
+namespace PodBat.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {

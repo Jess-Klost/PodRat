@@ -2,10 +2,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using RSSPod.Models;
-using RSSPod.ViewModels;
+using PodBat.Models;
+using PodBat.ViewModels;
 
-namespace RSSPod.Views;
+namespace PodBat.Views;
 
 public partial class MediaPlayer : UserControl
 {

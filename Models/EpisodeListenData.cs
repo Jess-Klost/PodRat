@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class EpisodeListenData(string episodeId, float position)
 {

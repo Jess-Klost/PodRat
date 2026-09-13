@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:vm="using:RSSPod.ViewModels"
+            xmlns:vm="using:PodBat.ViewModels"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            x:Class="RSSPod.Views.FeedEditor"
+            x:Class="PodBat.Views.FeedEditor"
             x:DataType="vm:FeedEditorViewModel">
     <UserControl.DataContext>
         <vm:FeedEditorViewModel />    

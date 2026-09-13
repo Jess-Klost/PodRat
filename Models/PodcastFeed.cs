@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class PodcastFeed
 {

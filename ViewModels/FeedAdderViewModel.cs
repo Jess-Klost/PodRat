@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RSSPod.Models;
+using PodBat.Models;
 
-namespace RSSPod.ViewModels;
+namespace PodBat.ViewModels;
 
 public partial class FeedAdderViewModel : ObservableValidator
 {

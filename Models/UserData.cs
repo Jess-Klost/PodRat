@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class UserData
 {

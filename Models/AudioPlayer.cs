@@ -1,7 +1,7 @@
 using System;
 using LibVLCSharp.Shared;
 
-namespace RSSPod.Models;
+namespace PodBat.Models;
 
 public class AudioPlayer
 {

@@ -1,10 +1,10 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using RSSPod.Models;
-using RSSPod.ViewModels;
+using PodBat.Models;
+using PodBat.ViewModels;
 
-namespace RSSPod.Views;
+namespace PodBat.Views;
 
 public partial class FeedEditor : UserControl
 {

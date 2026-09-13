@@ -1,4 +1,4 @@
-namespace RSSPod.ViewModels;
+namespace PodBat.ViewModels;
 
 public partial class FeedAddButtonViewModel : ViewModelBase
 {
