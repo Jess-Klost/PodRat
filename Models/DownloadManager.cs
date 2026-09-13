@@ -16,6 +16,8 @@ public class DownloadManager
         "AudioDownloads";
     #elif OS_LINUX
         ".podrat/AudioDownloads";
+    #else
+        "userdata.json";
     #endif
     
     public enum DownloadStatus

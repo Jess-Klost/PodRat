@@ -25,6 +25,8 @@ public static class UserDataInstancer
         "userdata.json";
     #elif OS_LINUX
         ".podrat/userdata.json";
+    #else
+        "userdata.json";
     #endif
 
     public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
