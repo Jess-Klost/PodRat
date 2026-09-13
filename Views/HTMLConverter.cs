@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 
-namespace PodBat;
+namespace PodRat;
 
 public class HTMLConverter : IValueConverter
 {

@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Avalonia: PodBat",
+            "name": "Avalonia: PodRat",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/PodBat.csproj"
+            "projectPath": "${workspaceFolder}/PodRat.csproj"
         }
     ]
 }

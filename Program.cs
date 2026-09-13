@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace PodBat;
+namespace PodRat;
 
 sealed class Program
 {

@@ -2,7 +2,7 @@ using System;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class PodcastFeedItem
 {

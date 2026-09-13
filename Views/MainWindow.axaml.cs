@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
-using PodBat.Models;
-using PodBat.ViewModels;
+using PodRat.Models;
+using PodRat.ViewModels;
 
-namespace PodBat.Views;
+namespace PodRat.Views;
 
 public partial class MainWindow : Window
 {

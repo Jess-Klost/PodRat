@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using PodBat.Models;
+using PodRat.Models;
 
-namespace PodBat.ViewModels;
+namespace PodRat.ViewModels;
 
 public partial class FeedsOverviewViewModel : ViewModelBase
 {

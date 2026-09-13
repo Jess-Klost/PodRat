@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public sealed class ListenDataManager
 {

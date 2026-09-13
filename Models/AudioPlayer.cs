@@ -1,7 +1,7 @@
 using System;
 using LibVLCSharp.Shared;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class AudioPlayer
 {

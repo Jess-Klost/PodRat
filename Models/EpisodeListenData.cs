@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class EpisodeListenData(string episodeId, float position)
 {

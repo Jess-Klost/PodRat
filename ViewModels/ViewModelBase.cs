@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PodBat.ViewModels;
+namespace PodRat.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {

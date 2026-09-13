@@ -3,7 +3,7 @@ using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 
-namespace PodBat;
+namespace PodRat;
 
 public class StringConcatConverter : IValueConverter
 {

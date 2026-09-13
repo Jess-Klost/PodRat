@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public sealed class DirectoryNameAttribute : ValidationAttribute
 {

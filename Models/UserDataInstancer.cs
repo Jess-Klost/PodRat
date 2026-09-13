@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class UserDataChangedEventArgs
 {

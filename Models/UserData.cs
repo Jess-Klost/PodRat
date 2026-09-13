@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class UserData
 {

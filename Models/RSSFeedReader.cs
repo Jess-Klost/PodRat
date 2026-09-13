@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class RSSFeedReader
 {

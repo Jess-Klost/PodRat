@@ -1,11 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:vm="using:PodBat.ViewModels"
+            xmlns:vm="using:PodRat.ViewModels"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-            xmlns:views="using:PodBat.Views"
-            x:Class="PodBat.Views.FeedsOverview"
+            xmlns:views="using:PodRat.Views"
+            x:Class="PodRat.Views.FeedsOverview"
             x:DataType="vm:FeedsOverviewViewModel">
     <UserControl.DataContext>
         <vm:FeedsOverviewViewModel />    

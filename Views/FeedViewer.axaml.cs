@@ -5,10 +5,10 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
-using PodBat.Models;
-using PodBat.ViewModels;
+using PodRat.Models;
+using PodRat.ViewModels;
 
-namespace PodBat.Views;
+namespace PodRat.Views;
 
 public partial class FeedViewer : UserControl
 {

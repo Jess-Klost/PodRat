@@ -2,11 +2,11 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using PodBat.Models;
-using PodBat.ViewModels;
-using PodBat.Views;
+using PodRat.Models;
+using PodRat.ViewModels;
+using PodRat.Views;
 
-namespace PodBat;
+namespace PodRat;
 
 public partial class App : Application
 {

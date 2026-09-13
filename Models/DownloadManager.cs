@@ -8,7 +8,7 @@ using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PodBat.Models;
+namespace PodRat.Models;
 
 public class DownloadManager
 {

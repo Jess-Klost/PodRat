@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using PodBat.Models;
+using PodRat.Models;
 
-namespace PodBat.ViewModels;
+namespace PodRat.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
