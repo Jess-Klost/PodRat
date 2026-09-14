@@ -27,7 +27,7 @@ public class DownloadManager
         downloaded       
     }
 
-    static Dictionary<SyndicationItem, CancellationToken> currentDownloads = new Dictionary<SyndicationItem, CancellationToken>();
+    static Dictionary<string, CancellationToken> currentDownloads = new Dictionary<string, CancellationToken>();
 
     public DownloadManager()
     {
@@ -44,7 +44,7 @@ public class DownloadManager
 
     public async Task DownloadItem(PodcastFeed feed, SyndicationItem item, IProgress<float>? progress = null, CancellationToken cancellationToken = default)
     {
-        currentDownloads.Add(item, cancellationToken);
+        currentDownloads.Add(DownloadedItemPath(feed, item), cancellationToken);
 
         try {
                 if (!Directory.Exists(Path.Combine(downloadDirectory, feed.Name)))
@@ -93,7 +93,7 @@ public class DownloadManager
         }
         finally
         {
-            currentDownloads.Remove(item);
+            currentDownloads.Remove(DownloadedItemPath(feed, item));
         }
     }
 
@@ -150,7 +150,7 @@ public class DownloadManager
 
     public static bool IsDownloaded(PodcastFeed feed, SyndicationItem item)
     {
-        if (currentDownloads.ContainsKey(item)) // currently downloading, return false
+        if (currentDownloads.ContainsKey(DownloadedItemPath(feed, item))) // currently downloading, return false
         {
             return false;
         }
@@ -163,7 +163,7 @@ public class DownloadManager
 
     public static DownloadStatus GetDownloadStatus(PodcastFeed feed, SyndicationItem item)
     {
-        if (currentDownloads.ContainsKey(item)) // currently downloading, return false
+        if (currentDownloads.ContainsKey(DownloadedItemPath(feed, item))) // currently downloading, return false
         {
             return DownloadStatus.currentlyDownloading;
         }
@@ -205,5 +205,11 @@ public class DownloadManager
     public static string FeedDownloadPath(PodcastFeed feed)
     {
         return Path.GetFullPath(Path.Combine(downloadDirectory, feed.Name));
+    }
+
+    public static void CleanUpCurrentDownloads()
+    {
+        foreach (string path in currentDownloads.Keys)
+            File.Delete(path);
     }
 }

@@ -11,8 +11,9 @@ namespace PodRat.ViewModels;
 
 public partial class FeedViewerViewModel : ViewModelBase
 {
-    const string DownloadDirectory = "AudioDownloads";
-    
+    // Keep track of instances, so a call can be made on exit
+    public static List<FeedViewerViewModel> Instances { get; } = new List<FeedViewerViewModel>(); 
+
     [ObservableProperty]
     public partial ObservableCollection<PodcastFeedItem>? CurrentFeed { get; set; }
     [ObservableProperty]
@@ -39,6 +40,30 @@ public partial class FeedViewerViewModel : ViewModelBase
         UserData = UserDataInstancer.GetUserData();
         UserDataInstancer.UserDataChanged += OnUserDataChanged;
         UserDataInstancer.LoadUserData();
+
+        Instances.Add(this);
+    }
+
+    ~FeedViewerViewModel()
+    {
+        CancelAllDownloads();
+    }
+
+    public void OnExit()
+    {
+        CancelAllDownloads();
+        // Must clean up downloads on the main thread, since task clean up is 
+        // not guaranteed to run when exiting
+        DownloadManager.CleanUpCurrentDownloads();
+    }
+
+    void CancelAllDownloads()
+    {
+        foreach (string cancellationToken in currentDownloadCancellationTokens.Keys)
+        {
+            currentDownloadCancellationTokens[cancellationToken].Cancel();
+            currentDownloadCancellationTokens[cancellationToken].Dispose();
+        }
     }
 
     void SaveUserData()

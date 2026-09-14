@@ -33,8 +33,11 @@ public partial class App : Application
     {
         // Call OnExit for all media player instances, so listen data is saved 
         // for any currently loaded episode 
-        foreach(MediaPlayerViewModel mediaPlayer in MediaPlayerViewModel.Instances)
+        foreach (MediaPlayerViewModel mediaPlayer in MediaPlayerViewModel.Instances)
             mediaPlayer.OnExit();
+
+        foreach (FeedViewerViewModel feedViewer in FeedViewerViewModel.Instances)
+            feedViewer.OnExit();
         
         // Save listen data for all feeds to file on exit 
         foreach (PodcastFeed feed in UserDataInstancer.GetUserData().PodcastFeeds)
