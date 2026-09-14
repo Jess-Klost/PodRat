@@ -9,6 +9,8 @@ public class PodcastFeedItem
     public required PodcastFeed Feed { get; set; }
     public required SyndicationItem Item { get; set; }
     public Task<bool> IsDownloaded => GetIsDownloaded();
+    public Task<DownloadManager.DownloadStatus> DownloadStatus => GetDownloadStatus();
+
     public string Duration { get => GetDuration(); }
     public string ThumbnailLink { get => GetThumbnailLink(); }
     public long FileSize { get => GetFileSize(); }
@@ -18,6 +20,11 @@ public class PodcastFeedItem
     private async Task<bool> GetIsDownloaded()
     {
         return DownloadManager.IsDownloaded(Feed, Item);    
+    }
+
+    private async Task<DownloadManager.DownloadStatus> GetDownloadStatus()
+    {
+        return DownloadManager.GetDownloadStatus(Feed, Item);    
     }
 
     public bool GetAudioPath(out string path)

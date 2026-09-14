@@ -14,6 +14,8 @@
 
     <UserControl.Resources>
         <local:IsDownloadedToIconConverter x:Key="IsDownloadedConverter" />
+        <local:IsDownloadedStatusBoolConverter x:Key="DownloadStatusBoolConverter" />
+        <local:NotDownloadedStatusBoolConverter x:Key="NotDownloadStatusBoolConverter" />
         <local:TimeFormatConverter x:Key="TimeFormatConverter" />
         <local:HTMLConverter x:Key="HTMLConverter" />
         <local:CollectionIsNullOrEmpty x:Key="CollectionIsNullOrEmpty" />
@@ -158,18 +160,18 @@
                                             Grid.Column="3" Grid.RowSpan="2"
                                             IsVisible="{Binding HasAudio}">
                                             <StackPanel>
-                                            <PathIcon Data="{Binding IsDownloaded^, Converter={StaticResource IsDownloadedConverter}}" 
+                                            <PathIcon Data="{Binding DownloadStatus^, Converter={StaticResource IsDownloadedConverter}}" 
                                                 Width="20" Height="20" Margin="5"
                                                 HorizontalAlignment="Center"/>
                                             <ProgressBar 
                                                 Tag="DownloadProgressBar"
                                                 MinWidth="20"
-                                                IsVisible="{Binding !IsDownloaded^}"
+                                                IsVisible="{Binding DownloadStatus^, Converter={StaticResource NotDownloadStatusBoolConverter}}"
                                                 Background="{DynamicResource BaseMediumLow}" />
                                             <ProgressBar 
                                                 Tag="ListenDataProgressBar"
                                                 MinWidth="20" 
-                                                IsVisible="{Binding IsDownloaded^}"
+                                                IsVisible="{Binding DownloadStatus^, Converter={StaticResource DownloadStatusBoolConverter}}"
                                                 Background="{DynamicResource BaseMediumLow}"
                                                 Value="{Binding ListenDataPosition}"
                                                 Minimum="0"
