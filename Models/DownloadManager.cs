@@ -13,11 +13,11 @@ public class DownloadManager
 {
     public static string downloadDirectory { get; set; } = 
     #if OS_WINDOWS
-        "AudioDownloads";
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/AudioDownloads");
     #elif OS_LINUX
-        ".podrat/AudioDownloads";
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".podrat/AudioDownloads");
     #else
-        "userdata.json";
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/AudioDownloads");
     #endif
     
     public enum DownloadStatus

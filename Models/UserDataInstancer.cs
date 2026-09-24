@@ -20,13 +20,13 @@ public class UserDataChangedEventArgs
 public static class UserDataInstancer
 {
     private static UserData? instance = null;
-    const string UserDataFile = 
+    static readonly string UserDataFile =
     #if OS_WINDOWS
-        "userdata.json";
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
     #elif OS_LINUX
-        ".podrat/userdata.json";
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".podrat/userdata.json");
     #else
-        "userdata.json";
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
     #endif
 
     public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
@@ -43,8 +43,10 @@ public static class UserDataInstancer
         return instance;
     }
     
-    public static void LoadUserData(string jsonFile = UserDataFile)
+    public static void LoadUserData(string jsonFile = "")
     {
+        if (jsonFile == "")
+            jsonFile = UserDataFile;
         try
         {
             using StreamReader fileReader = new (jsonFile);
@@ -58,10 +60,12 @@ public static class UserDataInstancer
         }
     }
 
-    public static void SaveUserData(string jsonFile = UserDataFile)
+    public static void SaveUserData(string jsonFile = "")
     {
         if (instance == null)
             return;
+        if (jsonFile == "")
+            jsonFile = UserDataFile;
         string jsonString = JsonSerializer.Serialize(instance);
         File.WriteAllText(jsonFile, jsonString);
     }
