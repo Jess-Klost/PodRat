@@ -20,7 +20,8 @@
         "DesktopCategory": "Audio",
         "CreateBinSymlink": "True",
         "AdditionalDebDependencies": [
-            "libvlc-dev"
+            "libvlc-dev",
+            "vlc"
         ]
     },
     "Win32Settings": {
