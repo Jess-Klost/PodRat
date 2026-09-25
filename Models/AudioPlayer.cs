@@ -25,7 +25,11 @@ public class AudioPlayer
 
     public AudioPlayer()
     {
+        #if OS_WINDOWS
+        LibVLC = new LibVLC(enableDebugLogs: true,  "--audio-resampler=speex_resampler");
+        #else
         LibVLC = new LibVLC(enableDebugLogs: true);
+        #endif
         MediaPlayer = new MediaPlayer(LibVLC);
         MediaPlayer.PositionChanged += OnPositionChanged;
         MediaPlayer.Playing += PlayingStart;
