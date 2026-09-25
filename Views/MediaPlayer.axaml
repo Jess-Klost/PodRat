@@ -44,7 +44,7 @@
                 HorizontalAlignment="Center" Margin="5" TextTrimming="WordEllipsis" />
         </StackPanel>
         <StackPanel Margin="10" Grid.Row="1">
-            <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="100" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
+            <Slider Name="PositionSlider" Value="{Binding Position}" Maximum="1" Minimum="0" ValueChanged="Position_OnValueChanged"></Slider>
             <Panel>
                 <TextBlock HorizontalAlignment="Left">
                     <TextBlock.Text>
