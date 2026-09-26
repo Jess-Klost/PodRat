@@ -5,7 +5,7 @@ namespace PodRat.Models;
 
 public sealed class DirectoryNameAttribute : ValidationAttribute
 {
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         string? valueString = value as string; 
         if (valueString == null)

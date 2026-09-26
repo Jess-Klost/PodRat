@@ -9,8 +9,8 @@ namespace PodRat;
 public class IsDownloadedToIconConverter : IValueConverter
 {
     public static readonly IsDownloadedToIconConverter Instance = new();
-    public static object downloadIcon;
-    public static object playIcon;
+    public static object? downloadIcon;
+    public static object? playIcon;
 
     public object? Convert(object? value, Type targetType, object? parameter, 
                                                             CultureInfo culture)

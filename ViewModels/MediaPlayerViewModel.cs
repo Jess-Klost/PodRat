@@ -17,11 +17,11 @@ public partial class MediaPlayerViewModel : ViewModelBase
     [ObservableProperty]
     public partial double Volume { get; set; } = 50;
     [ObservableProperty]
-    public partial string Title { get; set; }
+    public partial string Title { get; set; } = "";
     [ObservableProperty]
-    public partial string Author { get; set; }
+    public partial string Author { get; set; } = "";
     [ObservableProperty]
-    public partial string ThumbnailLink { get; set; }
+    public partial string ThumbnailLink { get; set; } = "";
 
     AudioPlayer audioPlayer;
 

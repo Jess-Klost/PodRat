@@ -11,9 +11,8 @@ public class AudioPlayer
         get => _libVLC;
         private set => _libVLC = value;
     }
-    public event EventHandler<float> audioPositionChanged;
-    public event EventHandler<long> audioLengthChanged;
-    public event EventHandler playingStart;
+    public event EventHandler<float>? audioPositionChanged;
+    public event EventHandler? playingStart;
 
     private MediaPlayer _mediaPlayer;
     private MediaPlayer MediaPlayer
@@ -26,11 +25,11 @@ public class AudioPlayer
     public AudioPlayer()
     {
         #if OS_WINDOWS
-        LibVLC = new LibVLC(enableDebugLogs: true,  "--audio-resampler=speex_resampler");
+        _libVLC = new LibVLC(enableDebugLogs: true,  "--audio-resampler=speex_resampler");
         #else
-        LibVLC = new LibVLC(enableDebugLogs: true);
+        _libVLC = new LibVLC(enableDebugLogs: true);
         #endif
-        MediaPlayer = new MediaPlayer(LibVLC);
+        _mediaPlayer = new MediaPlayer(LibVLC);
         MediaPlayer.PositionChanged += OnPositionChanged;
         MediaPlayer.Playing += PlayingStart;
     }
@@ -104,7 +103,7 @@ public class AudioPlayer
         if (unplayed)
         {
             unplayed = false;
-            playingStart.Invoke(this, EventArgs.Empty);
+            playingStart?.Invoke(this, EventArgs.Empty);
         }
     }
 

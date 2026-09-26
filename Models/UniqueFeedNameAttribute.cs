@@ -4,7 +4,7 @@ namespace PodRat.Models;
 
 public sealed class UniqueFeedNameAttribute : ValidationAttribute
 {
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         string? valueString = value as string; 
         UserData userData = UserDataInstancer.GetUserData();

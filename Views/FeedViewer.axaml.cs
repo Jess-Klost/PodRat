@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -14,8 +13,8 @@ public partial class FeedViewer : UserControl
 {
     private FeedViewerViewModel? viewModel => DataContext as FeedViewerViewModel;
 
-    public event EventHandler<PodcastFeedItem> loadItem;
-    public event EventHandler backButtonPressed;
+    public event EventHandler<PodcastFeedItem>? loadItem;
+    public event EventHandler? backButtonPressed;
 
 
     public FeedViewer()
@@ -201,7 +200,7 @@ public partial class FeedViewer : UserControl
 
     private void BackButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        backButtonPressed.Invoke(this, EventArgs.Empty);
+        backButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 
     void OnItemDownloadedChanged(string id, DownloadManager.DownloadStatus downloadStatus)

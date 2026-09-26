@@ -1,5 +1,4 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using PodRat.Models;
 using PodRat.ViewModels;
@@ -10,7 +9,7 @@ public partial class FeedEditor : UserControl
 {
     private FeedEditorViewModel? viewModel => DataContext as FeedEditorViewModel;
     
-    public event EventHandler EditFeedSubmitted;
+    public event EventHandler? EditFeedSubmitted;
 
     public FeedEditor()
     {

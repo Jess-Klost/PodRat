@@ -28,11 +28,11 @@ public partial class FeedViewerViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool EditFeedPopupVisible { get; set; } = false;
 
-    public event EventHandler<string, DownloadManager.DownloadStatus> UpdateDownloadStatus;
-    public event EventHandler<string, float> ProgressChanged;
-    public event EventHandler SelectedFeedModified;
+    public event EventHandler<string, DownloadManager.DownloadStatus>? UpdateDownloadStatus;
+    public event EventHandler<string, float>? ProgressChanged;
+    public event EventHandler? SelectedFeedModified;
 
-    RSSFeedReader feedReader;
+    RSSFeedReader? feedReader;
     Dictionary<string, CancellationTokenSource> currentDownloadCancellationTokens = new Dictionary<string, CancellationTokenSource>(); 
 
     public FeedViewerViewModel()
@@ -72,7 +72,7 @@ public partial class FeedViewerViewModel : ViewModelBase
         if (e.changeType == UserDataChangedEventArgs.ChangeType.RenameFeed)
         {
             if (e.affectedFeed == SelectedFeed)
-                SelectedFeedModified.Invoke(this, EventArgs.Empty);
+                SelectedFeedModified?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -92,7 +92,7 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public async Task DownloadItem(string id)
     {
-        if (SelectedFeed == null)
+        if (SelectedFeed == null || feedReader == null)
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
@@ -142,6 +142,8 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public bool ItemDownloaded(string id)
     {
+        if (feedReader == null)
+            return false;
         if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
             || SelectedFeed == null)
         {
@@ -152,6 +154,8 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public DownloadManager.DownloadStatus ItemDownloadStatus(string id)
     {
+        if (feedReader == null)
+            return DownloadManager.DownloadStatus.notDownloaded;
         if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
             || SelectedFeed == null)
         {
@@ -162,7 +166,7 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public void DeleteItem(string id)
     {
-        if (SelectedFeed == null)
+        if (SelectedFeed == null || feedReader == null)
             return;
         if (feedReader.GetItem(id, out SyndicationItem? item) && item != null)
         {
@@ -173,6 +177,8 @@ public partial class FeedViewerViewModel : ViewModelBase
 
     public PodcastFeedItem? GetItem(string id)
     {
+        if (feedReader == null)
+            return null;
         if (!feedReader.GetItem(id, out SyndicationItem? item) || item == null 
             || SelectedFeed == null)
         {

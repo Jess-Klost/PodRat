@@ -11,7 +11,7 @@ public partial class FeedsOverview : UserControl
 {
     private FeedsOverviewViewModel? viewModel => DataContext as FeedsOverviewViewModel;
 
-    public event EventHandler<PodcastFeed> selectFeed;
+    public event EventHandler<PodcastFeed>? selectFeed;
 
     public FeedsOverview()
     {
@@ -34,7 +34,7 @@ public partial class FeedsOverview : UserControl
     {
         if (e.AddedItems.Count == 1 && e.AddedItems[0] is PodcastFeed selectedFeed)
         {
-            selectFeed.Invoke(this, selectedFeed);
+            selectFeed?.Invoke(this, selectedFeed);
         }
 
         if (sender is ListBox listBox)
