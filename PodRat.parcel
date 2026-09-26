@@ -10,7 +10,7 @@
             "property": "AssemblyName"
         },
         "ApplicationName": "PodRat",
-        "Version": "0.1.2",
+        "Version": "0.1.4",
         "Icon": "podrat.ico",
         "Company": "Jess Klost"
     },
