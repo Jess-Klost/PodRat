@@ -52,8 +52,12 @@ public partial class MediaPlayerViewModel : ViewModelBase
         audioPlayer.SetVolume(volume);
     }
 
-    public void EditPosition(float position)
+    public void EditPosition(float position, bool shouldBePlaying = false)
     {
+        if (shouldBePlaying && audioPlayer.GetPosition() == 1f)
+        {
+            audioPlayer.Play();
+        }
         audioPlayer.SetPosition(position);
     }
 

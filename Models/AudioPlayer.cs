@@ -58,8 +58,15 @@ public class AudioPlayer
     }
 
     public void Play()
-    {   
-        MediaPlayer.Play();         
+    {
+        // Auto-replay if ended
+        if (MediaPlayer.Media?.State == VLCState.Ended)
+        {
+            float currentPosition = MediaPlayer.Position;
+            MediaPlayer.Play(MediaPlayer.Media);
+            MediaPlayer.Position = currentPosition;
+        }
+        MediaPlayer.Play();        
     }
 
     public void Pause()
