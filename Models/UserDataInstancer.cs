@@ -67,6 +67,14 @@ public static class UserDataInstancer
         {
             return;
         }
+        catch (JsonException)
+        {
+            return;
+        }
+        catch (NotSupportedException)
+        {
+            return;
+        }
     }
 
     public static void LoadUserPreferences(string jsonFile = "")
@@ -77,9 +85,17 @@ public static class UserDataInstancer
         {
             using StreamReader fileReader = new (jsonFile);
             string jsonString = fileReader.ReadToEnd();
-            UserPreferencesInstance = JsonSerializer.Deserialize<UserPreferences>(jsonString);
+            UserPreferencesInstance = JsonSerializer.Deserialize<UserPreferences>(jsonString) ?? UserPreferencesInstance;   
         }
         catch (FileNotFoundException)
+        {
+            return;
+        }
+        catch (JsonException)
+        {
+            return;
+        }
+        catch (NotSupportedException)
         {
             return;
         }
