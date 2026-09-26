@@ -12,6 +12,7 @@ public partial class FeedAdderViewModel : ObservableValidator
     [NotifyCanExecuteChangedFor(nameof(AddFeedCommand))]
     [Required(ErrorMessage="{0} is required.")]
     [DirectoryName]
+    [UniqueFeedName(ErrorMessage="A feed with this name already exists.")]
     private string _name = "";
 
     [ObservableProperty]
