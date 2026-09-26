@@ -32,7 +32,9 @@ public partial class MediaPlayerViewModel : ViewModelBase
         audioPlayer = new AudioPlayer();
         audioPlayer.audioPositionChanged += AudioPositionChanged;
         audioPlayer.playingStart += PlayingStart;
-        audioPlayer.SetVolume((int)Volume);
+        UserDataInstancer.LoadUserPreferences();
+        Volume = UserDataInstancer.UserPreferencesInstance.Volume;
+        audioPlayer.SetVolume(UserDataInstancer.UserPreferencesInstance.Volume);
 
         Instances.Add(this);
     }
@@ -50,6 +52,7 @@ public partial class MediaPlayerViewModel : ViewModelBase
     public void ChangeVolume(int volume)
     {
         audioPlayer.SetVolume(volume);
+        UserDataInstancer.UserPreferencesInstance.Volume = volume;
     }
 
     public void EditPosition(float position, bool shouldBePlaying = false)

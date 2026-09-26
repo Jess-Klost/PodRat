@@ -24,6 +24,8 @@ public partial class MediaPlayer : UserControl
             routes: RoutingStrategies.Direct
                     | RoutingStrategies.Tunnel
                     | RoutingStrategies.Bubble, handledEventsToo: false);
+        if (viewModel != null)
+            VolumeSlider.Value = (double)viewModel.Volume;
     }
 
     public void LoadItem(PodcastFeedItem item)
