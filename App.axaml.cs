@@ -42,5 +42,7 @@ public partial class App : Application
         // Save listen data for all feeds to file on exit 
         foreach (PodcastFeed feed in UserDataInstancer.GetUserData().PodcastFeeds)
             ListenDataManager.SaveListenData(feed);
+
+        UserDataInstancer.SaveUserPreferences();
     }
 }

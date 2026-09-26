@@ -27,9 +27,14 @@
             <ColumnDefinition Width="4"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <views:FeedsOverview Name="FeedsOverviewControl" Grid.Column="0" IsVisible="True" />
-        <views:FeedViewer Name="FeedViewerControl" Grid.Column="0" IsVisible="False" />
-        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
-        <views:MediaPlayer Name="MediaPlayerControl" Grid.Column="2" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <views:MenuBar Grid.ColumnSpan="3" Grid.Row="0" />
+        <views:FeedsOverview Name="FeedsOverviewControl" Grid.Column="0" Grid.Row="1" IsVisible="True" />
+        <views:FeedViewer Name="FeedViewerControl" Grid.Column="0" Grid.Row="1" IsVisible="False" />
+        <GridSplitter Grid.Column="1" Grid.Row="1" ResizeDirection="Columns" />
+        <views:MediaPlayer Name="MediaPlayerControl" Grid.Column="2" Grid.Row="1" />
     </Grid>
 </Window>

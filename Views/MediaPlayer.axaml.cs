@@ -29,8 +29,7 @@ public partial class MediaPlayer : UserControl
     public void LoadItem(PodcastFeedItem item)
     {
         viewModel?.LoadItem(item);
-        // TODO: Add user setting for auto play on load
-        if (true)
+        if (UserDataInstancer.UserPreferencesInstance.PlayOnSelect)
         {
             // Auto play on item load
             viewModel?.PlayAudio();

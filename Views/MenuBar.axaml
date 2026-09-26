@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:vm="using:PodRat.ViewModels"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            x:Class="PodRat.Views.MenuBar"
+            x:DataType="vm:MenuBarViewModel">
+    <UserControl.DataContext>
+        <vm:MenuBarViewModel />    
+    </UserControl.DataContext>
+    <Menu>
+        <MenuItem Header="_Preferences">
+            <MenuItem Header="_Listening">
+                <MenuItem Name="PlayOnSelectButton" Header="Play on Episode Select" ToggleType="CheckBox"
+                    ToolTip.Tip="Start playback immediately when an episode is selected."
+                    Click="PlayOnSelectButton_Click" />
+                <MenuItem Name="AutoResumeButton" Header="Auto-Resume" ToggleType="CheckBox" 
+                    ToolTip.Tip="Resumes where you left off at an episode when playing that episode again."
+                    Click="AutoResumeButton_Click"
+                     />
+            </MenuItem>
+            <MenuItem Header="_Theme">
+                <MenuItem Name="ThemeDefaultButton" Header="System Default" ToggleType="Radio"
+                    GroupName="Theme" Click="ThemeDefaultButton_Click" />
+                <MenuItem Name="ThemeLightButton" Header="Light" ToggleType="Radio"
+                    GroupName="Theme" Click="ThemeLightButton_Click" />
+                <MenuItem Name="ThemeDarkButton" Header="Dark" ToggleType="Radio" 
+                    GroupName="Theme" Click="ThemeDarkButton_Click" />
+            </MenuItem>
+        </MenuItem>
+    </Menu>
+</UserControl>

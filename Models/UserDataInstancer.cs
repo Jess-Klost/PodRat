@@ -28,10 +28,19 @@ public static class UserDataInstancer
     #else
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
     #endif
+    static readonly string UserPreferencesFile = 
+    #if OS_WINDOWS
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userpreferences.json");
+    #elif OS_LINUX
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".podrat/userpreferences.json");
+    #else
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
+    #endif
 
     public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
 
     public static DownloadManager DownloadManagerInstance { get; private set; } = new DownloadManager();
+    public static UserPreferences UserPreferencesInstance { get; private set; } = new UserPreferences();
 
     public static UserData GetUserData()
     {
@@ -60,6 +69,22 @@ public static class UserDataInstancer
         }
     }
 
+    public static void LoadUserPreferences(string jsonFile = "")
+    {
+        if (jsonFile == "")
+            jsonFile = UserPreferencesFile;
+        try
+        {
+            using StreamReader fileReader = new (jsonFile);
+            string jsonString = fileReader.ReadToEnd();
+            UserPreferencesInstance = JsonSerializer.Deserialize<UserPreferences>(jsonString);
+        }
+        catch (FileNotFoundException)
+        {
+            return;
+        }
+    }
+
     public static void SaveUserData(string jsonFile = "")
     {
         if (instance == null)
@@ -67,6 +92,16 @@ public static class UserDataInstancer
         if (jsonFile == "")
             jsonFile = UserDataFile;
         string jsonString = JsonSerializer.Serialize(instance);
+        File.WriteAllText(jsonFile, jsonString);
+    }
+
+    public static void SaveUserPreferences(string jsonFile = "")
+    {
+        if (instance == null)
+            return;
+        if (jsonFile == "")
+            jsonFile = UserPreferencesFile;
+        string jsonString = JsonSerializer.Serialize(UserPreferencesInstance);
         File.WriteAllText(jsonFile, jsonString);
     }
 

@@ -66,11 +66,6 @@ public partial class FeedViewerViewModel : ViewModelBase
         }
     }
 
-    void SaveUserData()
-    {
-        UserDataInstancer.SaveUserData();
-    }
-
     void OnUserDataChanged(object? sender, UserDataChangedEventArgs e)
     {
         UserData = UserDataInstancer.GetUserData();

@@ -105,7 +105,8 @@ public partial class MediaPlayerViewModel : ViewModelBase
         Title = item.Item.Title.Text;
         Author = item.Feed.Name;
         ThumbnailLink = item.GetThumbnailLink();
-        Position = ListenDataManager.GetListenDataPosition(item.Feed, item.Item.Id);
+        Position = UserDataInstancer.UserPreferencesInstance.AutoResume ? 
+            ListenDataManager.GetListenDataPosition(item.Feed, item.Item.Id) : 0;
         if (Position == 1) Position = 0; // if episode is played after completed, go back to start 
         LengthMS = 0;
         currentLoadedItem = item;
