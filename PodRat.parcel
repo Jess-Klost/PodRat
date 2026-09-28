@@ -10,13 +10,14 @@
             "property": "AssemblyName"
         },
         "ApplicationName": "PodRat",
-        "Version": "0.1.4",
-        "Icon": "podrat.ico",
+        "Version": "1.0.0",
+        "Icon": "Assets/podrat.ico",
         "Company": "Jess Klost"
     },
     "LinuxSettings": {
-        "AppIcon": "podrat.png",
-        "Maintainer": "akloste1@gmail.com",
+        "AppIcon": "Assets/podrat.png",
+        "Maintainer": "",
+        "CopyrightFile": "LICENSE.md",
         "DesktopCategory": "Audio",
         "CreateBinSymlink": "True",
         "AdditionalDebDependencies": [
