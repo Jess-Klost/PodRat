@@ -101,6 +101,7 @@ Distributed under the **GNU General Public License v3.0**. See
 [LICENSE.md](./LICENSE.md) for more information.
 
 ## Acknowledgments
+See [NOTICE.md](./NOTICE.md) for licenses.
 - [Avalonia UI](https://github.com/AvaloniaUI/Avalonia) 
 - [LibVLCSharp](https://github.com/videolan/libvlcsharp)
 - [AsyncImageLoader.Avalonia](https://github.com/AvaloniaUtils/AsyncImageLoader.Avalonia)
