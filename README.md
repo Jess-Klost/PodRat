@@ -1,4 +1,9 @@
+<div align="center">
+    <img src="Assets/podrat.png" alt="Logo" width="80" height="80">
+</div>
+
 # PodRat
+
 1. [About](#about)
     - [Built With](#built-with)
 2. [Features](#features)
@@ -104,4 +109,3 @@ Distributed under the **GNU General Public License v3.0**. See
 - [LibVLCSharp](https://github.com/videolan/libvlcsharp)
 - [AsyncImageLoader.Avalonia](https://github.com/AvaloniaUtils/AsyncImageLoader.Avalonia)
 - [CommunityToolkit.Mvvm](https://github.com/MicrosoftDocs/CommunityToolkit/)
- 
