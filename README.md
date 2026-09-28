@@ -1,13 +1,21 @@
+# PodRat
 <div align="center">
     <img src="Assets/podrat.png" alt="Logo" width="80" height="80">
 </div>
 
-# PodRat
+**PodRat** is a simple desktop application for listening to RSS-based podcasts.
 
-1. [About](#about)
-    - [Built With](#built-with)
-2. [Features](#features)
-3. [Installation](#installation)
+Input an RSS feed link, download your favorite episodes, and listen!
+
+## Built with
+- [.NET 10.0](https://dotnet.microsoft.com/en-us/)
+- [C#](https://dotnet.microsoft.com/en-us/languages/csharp)
+- [Avalonia UI](https://avaloniaui.net/)
+- [LibVLCSharp](https://github.com/videolan/libvlcsharp)
+
+## Table of Contents
+1. [Features](#features)
+2. [Installation](#installation)
    1. [Windows](#windows)
         - [Installing](#installing)
         - [Uninstalling](#uninstalling)
@@ -16,21 +24,9 @@
         - [Installing](#installing-1)
         - [Uninstalling](#uninstalling-1)
         - [Updating](#updating-1)
-4. [Planned Features](#planned-features)
-5. [License](#license)
-6. [Acknowledgments](#acknowledgments)
-
-## About
-**PodRat** is a simple desktop application for listening to RSS-based podcasts.
-
-Input a RSS feed link, download your favorite episodes, and listen!
-
-### Built With
-- [.NET 10.0](https://dotnet.microsoft.com/en-us/)
-- [C#](https://dotnet.microsoft.com/en-us/languages/csharp)
-- [Avalonia UI](https://avaloniaui.net/)
-- [LibVLCSharp](https://github.com/videolan/libvlcsharp)
-
+3. [Planned Features](#planned-features)
+4. [License](#license)
+5. [Acknowledgments](#acknowledgments)
 
 ## Features
 - View multiple podcast RSS feeds
