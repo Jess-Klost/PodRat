@@ -21,21 +21,9 @@ public static class UserDataInstancer
 {
     private static UserData? instance = null;
     static readonly string UserDataFile =
-    #if OS_WINDOWS
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
-    #elif OS_LINUX
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".podrat/userdata.json");
-    #else
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
-    #endif
+        Path.Combine(EnvironmentPaths.Config, "userdata.json");
     static readonly string UserPreferencesFile = 
-    #if OS_WINDOWS
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userpreferences.json");
-    #elif OS_LINUX
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".podrat/userpreferences.json");
-    #else
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/userdata.json");
-    #endif
+        Path.Combine(EnvironmentPaths.Config, "userpreferences.json");
 
     public static event EventHandler<object?, UserDataChangedEventArgs>? UserDataChanged;
 

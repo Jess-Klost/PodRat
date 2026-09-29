@@ -12,13 +12,7 @@ namespace PodRat.Models;
 public class DownloadManager
 {
     public static string downloadDirectory { get; set; } = 
-    #if OS_WINDOWS
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/AudioDownloads");
-    #elif OS_LINUX
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".podrat/AudioDownloads");
-    #else
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PodRat/AudioDownloads");
-    #endif
+        Path.Combine(EnvironmentPaths.ApplicationData, "AudioDownloads");
     
     public enum DownloadStatus
     {
